@@ -42,6 +42,10 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adjustments);
 
+        //a new Player is created and his token stored
+        player = new Player();
+        //player.setToken()
+
         //the needed views
         currentPlayer = findViewById(R.id.currentPlayer);
         editName = findViewById(R.id.yourName);
@@ -172,6 +176,8 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
     public void deleteAccount() {
 
     }
+
+
 
 
 

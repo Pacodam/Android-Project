@@ -29,20 +29,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/yourMail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="15dp"
-                android:ems="10"
-                android:hint="@string/yourMail"
-                android:inputType="textEmailAddress"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/yourName" />
-
-            <EditText
                 android:id="@+id/yourName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
