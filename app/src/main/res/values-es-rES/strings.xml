@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FranMorenoAlc</string>
+    <string name="btnRank">Rankings</string>
+    <string name="btnAdjustments">Ajustes</string>
+    <string name="btnQuant">Quienes somos</string>
+    <string name="hintPlay">Clicaste JUGAR</string>
+    <string name="hintRank">Clicaste RANKINGS</string>
+    <string name="yourName">Introduce tu nombre</string>
+    <string name="yourMail">Introduce tu mail</string>
+    <string name="textName">Fran Moreno Alcaraz</string>
+    <string name="textViewExplica">Actualmente cursando DAM en Stucom, Barcelona. \n Este
+        es el primer proyecto android, trabajando en ello. </string>
+    <string name="gmapButton">Gmap de Stucom</string>
+    <string name="uploadImage">Opciones</string>
+    <string name="buttonCam">Camara</string>
+    <string name="buttonDelete">Elimina foto</string>
+    <string name="buttonUpload">Galeria</string>
+    <string name="dialogTitle">Opciones de foto</string>
+    <string name="btnPlay">Jugar</string>
+</resources>

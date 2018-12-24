@@ -1,0 +1,48 @@
+<resources>
+
+    <string name="google_api_key" translatable="false">AIzaSyCB--f_reP8v262JnkscG1MCw6eT8nsOC4 </string>
+    <string name="app_name">FranMorenoAlc</string>
+
+    <string name="adjustments">User adjustments</string>
+    <string name="btnRegistro">Registro</string>
+    <string name="btnPlay">Play</string>
+    <string name="btnRank">Ranking</string>
+    <string name="btnAdjustments">Adjustments</string>
+    <string name="btnQuant">Who we are</string>
+
+    <string name="hintPlay">You clicked PLAY</string>
+    <string name="hintRank">You clicked RANKING</string>
+
+    <string name="currentPlayer">current player</string>
+    <string name="yourName">Enter your name</string>
+    <string name="uploadImage">Camera</string>
+    <string name="uploadGallery">Gallery</string>
+    <string name="deleteImage">Delete image</string>
+    <string name="saveSettings">Save settings</string>
+    <string name="unregister">Delete your account</string>
+
+    <string name="dialogTitle">Photo options</string>
+    <string name="buttonUpload">Gallery</string>
+    <string name="buttonCam">Use camera</string>
+    <string name="buttonDelete">Delete photo</string>
+    <string name="actionCancel" translatable="false">OK</string>
+
+
+    <string name="textName">Fran Moreno Alcaraz</string>
+    <string name="textViewExplica">Currently studying DAM at Stucom academy, Barcelona. \n
+    This is my first Android project, work in progress.</string>
+    <string name="gmapButton">Stucom gmap</string>
+    <string name="title_activity_maps" translatable="false">Map</string>
+
+
+    <string name="registroAct">New registry</string>
+    <string name="mailHint">Enter your mail</string>
+    <string name="btnSendMail">Send</string>
+    <string name="verifyText">Please, enter your mail to receive a verification code:</string>
+    <string name="verifyHint">Your code</string>
+    <string name="btnVerify">Send</string>
+    <string name="codeText">Now enter the received code on your inbox:</string>
+
+
+
+</resources>
