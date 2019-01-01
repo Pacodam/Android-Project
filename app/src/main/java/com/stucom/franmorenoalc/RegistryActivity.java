@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.stucom.franmorenoalc.model.Player;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;

@@ -16,11 +16,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.stucom.franmorenoalc.model.Player;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AdjustmentsActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,23 +44,24 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
     EditText editName;
     TextView currentPlayer;
     Uri photoURI;
-    Player player;
     ImageView photo;  //ImageView para colocar la fotografía de perfil
-
+    Player player;
+    String token;
+    String mail;
 
     //variables para el AlertDialog
     Button gallery, camera, delete;
 
 
-
+    /* On activity create, the token and mail from the user (stored on registry) is recovered from sharedpreferences.
+     * Then, we call to a method that connects to the API and get any other info from the player if exists (avatar, etc).
+      * After that previous step, we get the widgets (buttons, edittexts, etc, and alow the actual player to upload new
+      * photos or delete, also he can delete the account (general or partial deleting). The email address is showed but not
+      * allowed to modify until unregistry */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adjustments);
-
-        //a new Player is created and his token stored
-        player = new Player();
-        //player.setToken()
 
         //the needed views
         currentPlayer = findViewById(R.id.currentPlayer);
@@ -58,9 +75,29 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.saveSettings).setOnClickListener(this);
         findViewById(R.id.unregister).setOnClickListener(this);
 
+        //we load token and mail stored in SharedPreferences
+        SharedPreferences prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        mail = prefs.getString("mail", null);
+        token = prefs.getString("token", null);
+        //Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
+
+        //a new Player is created and his token stored
+        player = new Player();
+        player.setToken(token);
+        player.setEmail(mail);
+
+        //load of player data from the server (if there is any data present)
+        playerDataFromAPI();
+
+
+
+
     }
 
 
+    /* On resume we reload the actual player using the loadFromPrefs method. We leave this
+    commented, to focus solely on the api connection
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -81,6 +118,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         ed.apply();
         super.onPause();
     }
+
 
     @Override
     public void onClick(View view) {
@@ -165,7 +203,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         }
         if (!saveToSharedPreferences) return;
         // comply if a save to prefs was requested
-        player.setAvatar(avatar);
+        player.setImage(avatar);
         player.saveToPrefs(this);
     }
 
@@ -176,6 +214,56 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
     public void deleteAccount() {
 
     }
+
+
+    /**
+     * For the adjustments activity we only need the avatar and the name from the player
+     */
+    public void playerDataFromAPI() {
+
+        String URL = "https://api.flx.cat/dam2game/user";
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET,
+                URL,
+                null,
+                new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //Toast.makeText(getApplicationContext(), "onResponse", Toast.LENGTH_SHORT).show();
+                String json = response.toString();
+                Gson gson = new Gson();
+                Type typeToken = new TypeToken<APIResponse<Player>>() {}.getType();
+                APIResponse<Player> apiResponse = gson.fromJson(json, typeToken);
+                Player player2 = apiResponse.getData();
+
+                Toast.makeText(getApplicationContext(), player2.getId(), Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override public void onErrorResponse(VolleyError error) {
+                String message = error.toString();
+                NetworkResponse response = error.networkResponse;
+                if (response != null) {
+                    message = response.statusCode + " " + message;
+                }
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            }
+
+        }) {
+            @Override protected Map<String, String> getParams() {
+                Toast.makeText(getApplicationContext(), "getParams", Toast.LENGTH_SHORT).show();
+                Map<String, String> params = new HashMap<>();
+                params.put("token", token);
+                return params;
+            }
+        };
+
+        MyVolley.getInstance(this).add(request);
+
+    }
+
+
+
 
 
 
