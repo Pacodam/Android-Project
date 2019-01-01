@@ -27,13 +27,13 @@ public class Player {
     private int lastLevel;
     @SerializedName("lastScore")
     private int lastScore;
-    @SerializedName("scores")
-    private List<Score> scores;
+    //@SerializedName("scores")
+   // private List<Score> scores;
 
     public Player() {
     }
 
-    public Player(String token, String email, int id, String name, String image, String from, int totalScore, int lastLevel, int lastScore, List<Score> scores) {
+    public Player(String token, String email, int id, String name, String image, String from, int totalScore, int lastLevel, int lastScore) {
         this.token = token;
         this.email = email;
         this.id = id;
@@ -43,7 +43,7 @@ public class Player {
         this.totalScore = totalScore;
         this.lastLevel = lastLevel;
         this.lastScore = lastScore;
-        this.scores = scores;
+        //this.scores = scores;
     }
 
     //getters
@@ -56,7 +56,7 @@ public class Player {
     public int getTotalScore() { return totalScore; }
     public int getLastLevel() { return lastLevel; }
     public int getLastScore() { return lastScore; }
-    public List<Score> getScores() { return scores; }
+    //public List<Score> getScores() { return scores; }
 
     //setters
     public void setToken(String token) { this.token = token; }
@@ -68,7 +68,7 @@ public class Player {
     public void setTotalScore(int totalScore) { this.totalScore = totalScore; }
     public void setLastLevel(int lastLevel) { this.lastLevel = lastLevel; }
     public void setLastScore(int lastScore) { this.lastScore = lastScore; }
-    public void setScores(List<Score> scores) { this.scores = scores; }
+    //public void setScores(List<Score> scores) { this.scores = scores; }
 
     public void loadFromPrefs(Context context) {
         SharedPreferences prefs =

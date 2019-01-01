@@ -234,6 +234,7 @@ public class RegistryActivity extends AppCompatActivity {
 
         }) {
             @Override protected Map<String, String> getParams() {
+                Toast.makeText(getApplicationContext(), "getParams", Toast.LENGTH_SHORT).show();
                 Map<String, String> params = new HashMap<>();
                 params.put("email", editMail.getText().toString());
                 params.put("verify", editCode.getText().toString());

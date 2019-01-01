@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 import com.stucom.franmorenoalc.model.Player;
 
 import org.json.JSONObject;
@@ -78,7 +79,8 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         //we load token and mail stored in SharedPreferences
         SharedPreferences prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         mail = prefs.getString("mail", null);
-        token = prefs.getString("token", null);
+        //token = prefs.getString("token", null);
+        token = "3c488b7ff21eacf4b5954275160fe5933f2aa36a6aa0cf31dbfe295e2063edb6be94d27e1b499f3b0f137e258d6594920fd512d2ed08df54b08d8258853559ac";
         //Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
         //a new Player is created and his token stored
@@ -221,7 +223,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
      */
     public void playerDataFromAPI() {
 
-        String URL = "https://api.flx.cat/dam2game/user";
+        String URL = "https://api.flx.cat/dam2game/user?token="+ token;
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET,
                 URL,
@@ -234,10 +236,13 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
                 Gson gson = new Gson();
                 Type typeToken = new TypeToken<APIResponse<Player>>() {}.getType();
                 APIResponse<Player> apiResponse = gson.fromJson(json, typeToken);
-                Player player2 = apiResponse.getData();
-
-                Toast.makeText(getApplicationContext(), player2.getId(), Toast.LENGTH_SHORT).show();
-
+                if(apiResponse.getErrorCode() == 0) {
+                    Player player2 = new Player();
+                    player2 = apiResponse.getData();
+                    currentPlayer.setText(player2.getName());
+                    Picasso.get().load(player2.getImage()).into(photo);
+                    //Toast.makeText(getApplicationContext(), player2.getImage(), Toast.LENGTH_SHORT).show();
+                }
             }
         }, new Response.ErrorListener() {
             @Override public void onErrorResponse(VolleyError error) {
@@ -249,14 +254,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
 
-        }) {
-            @Override protected Map<String, String> getParams() {
-                Toast.makeText(getApplicationContext(), "getParams", Toast.LENGTH_SHORT).show();
-                Map<String, String> params = new HashMap<>();
-                params.put("token", token);
-                return params;
-            }
-        };
+        });
 
         MyVolley.getInstance(this).add(request);
 
