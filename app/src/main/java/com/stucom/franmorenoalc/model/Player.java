@@ -70,6 +70,7 @@ public class Player {
     public void setLastScore(int lastScore) { this.lastScore = lastScore; }
     //public void setScores(List<Score> scores) { this.scores = scores; }
 
+
     public void loadFromPrefs(Context context) {
         SharedPreferences prefs =
                 context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);

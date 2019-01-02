@@ -11,7 +11,7 @@
     <string name="btnQuant">Who we are</string>
 
     <string name="hintPlay">You clicked PLAY</string>
-    <string name="hintRank">You clicked RANKING</string>
+    <string name="hintRank">RANKING</string>
 
     <string name="currentPlayer">current player</string>
     <string name="yourName">Enter your name</string>

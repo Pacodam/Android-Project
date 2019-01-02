@@ -64,7 +64,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adjustments);
 
-        //the needed views
+        //the needed views. We don't use the edit mail view, because this cannot be modified until unregistering.
         currentPlayer = findViewById(R.id.currentPlayer);
         editName = findViewById(R.id.yourName);
         photo = findViewById(R.id.yourPhoto);
@@ -83,10 +83,6 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         token = "3c488b7ff21eacf4b5954275160fe5933f2aa36a6aa0cf31dbfe295e2063edb6be94d27e1b499f3b0f137e258d6594920fd512d2ed08df54b08d8258853559ac";
         //Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
-        //a new Player is created and his token stored
-        player = new Player();
-        player.setToken(token);
-        player.setEmail(mail);
 
         //load of player data from the server (if there is any data present)
         playerDataFromAPI();
@@ -157,21 +153,21 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         File photo = new File(storageDir, "photo.jpg");
         try {
             boolean ok = photo.createNewFile();
-            if (ok) Log.d("flx", "Overwriting image");
+            if (ok) Log.d("franmorenoalc", "Overwriting image");
         } catch (IOException e) {
-            Log.e("flx", "Error creating image file " + photo);
+            Log.e("franmorenoalc", "Error creating image file " + photo);
             return;
         }
-        Log.d("flx", "Writing photo to " + photo);
+        Log.d("franmorenoalc", "Writing photo to " + photo);
         // Pass the photo path to the Intent and start it
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {
-            photoURI = FileProvider.getUriForFile(this, "com.stucom.flx.fileProvider", photo);
+            photoURI = FileProvider.getUriForFile(this, "com.stucom.franmorenoalc.fileProvider", photo);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             startActivityForResult(takePictureIntent, AVATAR_FROM_CAMERA);
         }
         catch (IllegalArgumentException e) {
-            Log.e("flx", e.getMessage());
+            Log.e("franmorenoalc", e.getMessage());
         }
     }
 
@@ -219,7 +215,9 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
 
 
     /**
-     * For the adjustments activity we only need the avatar and the name from the player
+     * For the adjustments activity we only need the avatar and the name from the player.
+     * If the user got previously uploaded name and avatar, we download at first from the
+     * API and show in the Activity.
      */
     public void playerDataFromAPI() {
 
@@ -237,10 +235,9 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
                 Type typeToken = new TypeToken<APIResponse<Player>>() {}.getType();
                 APIResponse<Player> apiResponse = gson.fromJson(json, typeToken);
                 if(apiResponse.getErrorCode() == 0) {
-                    Player player2 = new Player();
-                    player2 = apiResponse.getData();
-                    currentPlayer.setText(player2.getName());
-                    Picasso.get().load(player2.getImage()).into(photo);
+                    player = apiResponse.getData();
+                    currentPlayer.setText(player.getName());
+                    Picasso.get().load(player.getImage()).into(photo);
                     //Toast.makeText(getApplicationContext(), player2.getImage(), Toast.LENGTH_SHORT).show();
                 }
             }
