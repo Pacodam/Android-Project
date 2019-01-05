@@ -1,7 +1,9 @@
 package com.stucom.franmorenoalc;
 
+import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +33,7 @@ import com.stucom.franmorenoalc.model.Player;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RankActivity extends AppCompatActivity {
@@ -36,6 +42,11 @@ public class RankActivity extends AppCompatActivity {
     TextView textView;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
+    Spinner spinner;
+    private List<Player> players;
+    private List<Player> players2;
+    Dialog myDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +58,7 @@ public class RankActivity extends AppCompatActivity {
         //token = prefs.getString("token", null);
         token = "3c488b7ff21eacf4b5954275160fe5933f2aa36a6aa0cf31dbfe295e2063edb6be94d27e1b499f3b0f137e258d6594920fd512d2ed08df54b08d8258853559ac";
         //Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
-        textView = findViewById(R.id.hintRank);
+        textView = findViewById(R.id.textView);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -81,12 +92,26 @@ public class RankActivity extends AppCompatActivity {
                         Gson gson = new Gson();
                         Type typeToken = new TypeToken<APIResponse<List<Player>>>() {}.getType();
                         APIResponse<List<Player>> apiResponse = gson.fromJson(json, typeToken);
-                            List<Player> players = apiResponse.getData();
-                            PlayersAdapter adapter = new PlayersAdapter(players);
+                            players = apiResponse.getData();
+                            //a list without usernames "User", to clean garbage
+                            players2 = new ArrayList<>();
+                            for(Player p: players){
+                                if(!p.getName().equals("User")){
+                                    players2.add(p);
+                                }
+                            }
+                            PlayersAdapter adapter = new PlayersAdapter(players2);
+                            adapter.setOnClickListener(new View.OnClickListener(){
+                                @Override
+                                public void onClick(View v){
+
+                                    Player playerSelect = players2.get(recyclerView.getChildAdapterPosition(v));
+                                    
+                                    //Toast.makeText(getApplicationContext(), "seleccion: "+ players2.get(recyclerView.getChildAdapterPosition(view)).getName(),Toast.LENGTH_SHORT).show();
+                                }
+                            });
                             recyclerView.setAdapter(adapter);
-                            Toast.makeText(getApplicationContext(), players.get(6).getName() , Toast.LENGTH_SHORT).show();
-                        //textView.setText(message);
-                        swipeRefreshLayout.setRefreshing(false);
+                            swipeRefreshLayout.setRefreshing(false);
                     }
                 }, new Response.ErrorListener() {
               @Override public void onErrorResponse(VolleyError error) {
@@ -112,6 +137,7 @@ public class RankActivity extends AppCompatActivity {
         TextView textViewDwarf;
         ImageView imageView;
 
+
         PlayersViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.textView);
@@ -120,9 +146,10 @@ public class RankActivity extends AppCompatActivity {
         }
     }
 
-    class PlayersAdapter extends RecyclerView.Adapter<PlayersViewHolder> {
+    class PlayersAdapter extends RecyclerView.Adapter<PlayersViewHolder> implements View.OnClickListener {
 
         private List<Player> players;
+        private View.OnClickListener listener;
 
         PlayersAdapter(List<Player> players) {
             super();
@@ -133,6 +160,7 @@ public class RankActivity extends AppCompatActivity {
         public PlayersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
             View view = LayoutInflater.from(parent.getContext()).
                     inflate(R.layout.list_item, parent, false);
+            view.setOnClickListener(this);
             return new PlayersViewHolder(view);
         }
         @Override
@@ -143,9 +171,23 @@ public class RankActivity extends AppCompatActivity {
             viewHolder.textViewDwarf.setText(dwarf); */
             Picasso.get().load(player.getImage()).into(viewHolder.imageView);
         }
+
+        //OnClickListener methods
         @Override
         public int getItemCount() {
             return players.size();
+        }
+
+
+
+        public void setOnClickListener(View.OnClickListener listener){
+            this.listener = listener;
+        }
+        @Override
+        public void onClick(View v) {
+            if(listener != null){
+                listener.onClick(v);
+            }
         }
     }
 }
