@@ -1,7 +1,12 @@
 package com.stucom.franmorenoalc;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,6 +32,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
@@ -34,7 +42,9 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RankActivity extends AppCompatActivity {
 
@@ -104,9 +114,8 @@ public class RankActivity extends AppCompatActivity {
                             adapter.setOnClickListener(new View.OnClickListener(){
                                 @Override
                                 public void onClick(View v){
-
                                     Player playerSelect = players2.get(recyclerView.getChildAdapterPosition(v));
-                                    
+                                    playerSelectedDialog(playerSelect);
                                     //Toast.makeText(getApplicationContext(), "seleccion: "+ players2.get(recyclerView.getChildAdapterPosition(view)).getName(),Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -190,4 +199,78 @@ public class RankActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    public void playerSelectedDialog(final Player player){
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+        @SuppressLint("InflateParams") View mView = getLayoutInflater().inflate(R.layout.player_detail, null);
+        //elements in dialog
+        TextView userName = mView.findViewById(R.id.playerUserName);
+        ImageView userImg = mView.findViewById(R.id.playerIMG);
+        final EditText userText = mView.findViewById(R.id.playerMSG);
+        Button userTextSend = mView.findViewById(R.id.playerSEND);
+
+        userName.setText(player.getName());
+        Picasso.get().load(player.getImage()).into(userImg);
+
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+
+        userTextSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = userText.getText().toString();
+                if(text.trim().length() == 0) {
+                    Toast.makeText(getApplicationContext(), "Write something...",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    sendMessageToUser(player.getId(), text);
+                       // Toast.makeText(getApplicationContext(), "sent",Toast.LENGTH_SHORT).show();
+
+
+                }
+
+            }
+        });
+    }
+
+    public void sendMessageToUser(int id, final String text) {
+
+        String URL = "https://api.flx.cat/dam2game/message"+ id;
+
+        StringRequest request = new StringRequest(Request.Method.PUT, URL, new Response.Listener<String>() {
+            @Override public void onResponse(String response) {
+                String json = response.toString();
+                Gson gson = new Gson();
+                Type typeToken = new TypeToken<APIResponse>() {}.getType();
+                APIResponse apiResponse = gson.fromJson(json, typeToken);
+                if(apiResponse.getErrorCode() == 0){
+                    Toast.makeText(getApplicationContext(), "sent",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override public void onErrorResponse(VolleyError error) {
+                String message = error.toString();
+                NetworkResponse response = error.networkResponse;
+                if (response != null) {
+                    message = response.statusCode + " " + message;
+                }
+            }
+
+        }) {
+            @Override protected Map<String, String> getParams() {
+                Toast.makeText(getApplicationContext(), "getParams", Toast.LENGTH_SHORT).show();
+                Map<String, String> params = new HashMap<>();
+                params.put("token", token);
+                params.put("message", text);
+                return params;
+            }
+        };
+
+        MyVolley.getInstance(this).add(request);
+
+    }
+
 }
