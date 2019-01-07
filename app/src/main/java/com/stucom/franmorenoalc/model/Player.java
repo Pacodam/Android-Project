@@ -14,7 +14,7 @@ public class Player {
 
     //player attributes
     @SerializedName("id")
-    private int id;
+    private String id;
     @SerializedName("name")
     private String name;
     @SerializedName("image")
@@ -22,18 +22,18 @@ public class Player {
     @SerializedName("from")
     private String from;
     @SerializedName("totalScore")
-    private int totalScore;
+    private String totalScore;
     @SerializedName("lastLevel")
-    private int lastLevel;
+    private String lastLevel;
     @SerializedName("lastScore")
-    private int lastScore;
+    private String lastScore;
     //@SerializedName("scores")
    // private List<Score> scores;
 
     public Player() {
     }
 
-    public Player(String token, String email, int id, String name, String image, String from, int totalScore, int lastLevel, int lastScore) {
+    public Player(String token, String email, String id, String name, String image, String from, String totalScore, String lastLevel, String lastScore) {
         this.token = token;
         this.email = email;
         this.id = id;
@@ -49,26 +49,27 @@ public class Player {
     //getters
     public String getToken() { return token; }
     public String getEmail() { return email; }
-    public int getId() { return id; }
+    public String getId() { return id; }
     public String getName() { return name; }
     public String getImage() { return image; }
     public String getFrom() { return from; }
-    public int getTotalScore() { return totalScore; }
-    public int getLastLevel() { return lastLevel; }
-    public int getLastScore() { return lastScore; }
+    public String getTotalScore() { return totalScore; }
+    public String getLastLevel() { return lastLevel; }
+    public String getLastScore() { return lastScore; }
     //public List<Score> getScores() { return scores; }
 
     //setters
     public void setToken(String token) { this.token = token; }
     public void setEmail(String email) { this.email = email; }
-    public void setId(int id) { this.id = id; }
+    public void setId(String id) { this.id = id; }
     public void setName(String name) { this.name = name; }
     public void setImage(String image) { this.image = image; }
     public void setFrom(String from) { this.from = from; }
-    public void setTotalScore(int totalScore) { this.totalScore = totalScore; }
-    public void setLastLevel(int lastLevel) { this.lastLevel = lastLevel; }
-    public void setLastScore(int lastScore) { this.lastScore = lastScore; }
+    public void setTotalScore(String totalScore) { this.totalScore = totalScore; }
+    public void setLastLevel(String lastLevel) { this.lastLevel = lastLevel; }
+    public void setLastScore(String lastScore) { this.lastScore = lastScore; }
     //public void setScores(List<Score> scores) { this.scores = scores; }
+
 
 
     public void loadFromPrefs(Context context) {
@@ -90,4 +91,5 @@ public class Player {
         prefsEditor.putString("playerAvatar", image);
         prefsEditor.apply();
     }
+
 }

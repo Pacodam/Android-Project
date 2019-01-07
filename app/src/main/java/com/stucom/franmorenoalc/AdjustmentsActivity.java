@@ -2,6 +2,7 @@ package com.stucom.franmorenoalc;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -210,6 +211,45 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void deleteAccount() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("Delete account");
+        builder.setMessage("Please confirm you want to delete")
+                .setCancelable(false)
+                .setPositiveButton("Yes, for sure", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        deleteAccountType();
+                    }
+                })
+                .setNegativeButton("Mmmmm... not yet", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        android.support.v7.app.AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
+    public void deleteAccountType(){
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle("Delete account");
+        builder.setMessage("Select type of deleting")
+                .setCancelable(false)
+                .setPositiveButton("Delete everything", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        deleteFromApi(true);
+                    }
+                })
+                .setNegativeButton("Only unregister", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        deleteFromApi(false);
+                    }
+                });
+        android.support.v7.app.AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public void deleteFromApi(boolean mustDelete){
 
     }
 

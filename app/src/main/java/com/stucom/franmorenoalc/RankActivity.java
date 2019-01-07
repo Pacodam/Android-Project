@@ -88,6 +88,9 @@ public class RankActivity extends AppCompatActivity {
         downloadRanks();
     }
 
+    /**
+     * Gets all info from players stored at the API
+     */
     public void downloadRanks() {
         String URL = "https://api.flx.cat/dam2game/ranking?token="+ token;
         JsonObjectRequest request = new JsonObjectRequest(
@@ -143,7 +146,7 @@ public class RankActivity extends AppCompatActivity {
     class PlayersViewHolder extends RecyclerView.ViewHolder {
 
         TextView textView;
-        TextView textViewDwarf;
+        TextView textViewPoints;
         ImageView imageView;
 
 
@@ -151,7 +154,7 @@ public class RankActivity extends AppCompatActivity {
             super(itemView);
             textView = itemView.findViewById(R.id.textView);
             imageView = itemView.findViewById(R.id.imageView);
-            textViewDwarf = itemView.findViewById(R.id.textViewDwarf);
+            textViewPoints = itemView.findViewById(R.id.textViewPoints);
         }
     }
 
@@ -176,8 +179,7 @@ public class RankActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull PlayersViewHolder viewHolder, int position) {
             Player player = players.get(position);
             viewHolder.textView.setText(player.getName());
-            /*String dwarf = player.isDwarf() ? "Nan" : "Normal";
-            viewHolder.textViewDwarf.setText(dwarf); */
+            viewHolder.textViewPoints.setText(player.getTotalScore());
             Picasso.get().load(player.getImage()).into(viewHolder.imageView);
         }
 
@@ -226,18 +228,21 @@ public class RankActivity extends AppCompatActivity {
                 }
                 else{
                     sendMessageToUser(player.getId(), text);
-                       // Toast.makeText(getApplicationContext(), "sent",Toast.LENGTH_SHORT).show();
-
-
+                    //Toast.makeText(getApplicationContext(), "sent",Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
     }
 
-    public void sendMessageToUser(int id, final String text) {
+    /**
+     * Send message to another player via Volley
+     * @param id String
+     * @param text String
+     */
+    public void sendMessageToUser(String id, final String text) {
 
-        String URL = "https://api.flx.cat/dam2game/message"+ id;
+        String URL = "https://api.flx.cat/dam2game/message/"+ id;
 
         StringRequest request = new StringRequest(Request.Method.PUT, URL, new Response.Listener<String>() {
             @Override public void onResponse(String response) {
@@ -246,7 +251,7 @@ public class RankActivity extends AppCompatActivity {
                 Type typeToken = new TypeToken<APIResponse>() {}.getType();
                 APIResponse apiResponse = gson.fromJson(json, typeToken);
                 if(apiResponse.getErrorCode() == 0){
-                    Toast.makeText(getApplicationContext(), "sent",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Message sent",Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -261,10 +266,9 @@ public class RankActivity extends AppCompatActivity {
 
         }) {
             @Override protected Map<String, String> getParams() {
-                Toast.makeText(getApplicationContext(), "getParams", Toast.LENGTH_SHORT).show();
                 Map<String, String> params = new HashMap<>();
                 params.put("token", token);
-                params.put("message", text);
+                params.put("text", text);
                 return params;
             }
         };
