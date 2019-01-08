@@ -50,6 +50,8 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
     Player player;
     String token;
     String mail;
+    SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
 
     //variables para el AlertDialog
     Button gallery, camera, delete;
@@ -78,18 +80,14 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         findViewById(R.id.unregister).setOnClickListener(this);
 
         //we load token and mail stored in SharedPreferences
-        SharedPreferences prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        prefsEditor = prefs.edit();
         mail = prefs.getString("mail", null);
-        //token = prefs.getString("token", null);
-        token = "3c488b7ff21eacf4b5954275160fe5933f2aa36a6aa0cf31dbfe295e2063edb6be94d27e1b499f3b0f137e258d6594920fd512d2ed08df54b08d8258853559ac";
+        token = prefs.getString("token", null);
+        //token = "3c488b7ff21eacf4b5954275160fe5933f2aa36a6aa0cf31dbfe295e2063edb6be94d27e1b499f3b0f137e258d6594920fd512d2ed08df54b08d8258853559ac";
         //Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
-
-
         //load of player data from the server (if there is any data present)
         playerDataFromAPI();
-
-
-
 
     }
 
@@ -100,7 +98,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onResume() {
         super.onResume();
-        SharedPreferences prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         String name = prefs.getString("name", "");
         String mail = prefs.getString("mail", "");
         editName.setText(name);
@@ -111,7 +109,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onPause() {
         String name = editName.getText().toString();
-        SharedPreferences prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         SharedPreferences.Editor ed = prefs.edit();
         ed.putString("name", name);
         ed.apply();
@@ -237,21 +235,72 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
                 .setCancelable(false)
                 .setPositiveButton("Delete everything", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        deleteFromApi(true);
+                        //Toast.makeText(getApplicationContext(), "click1", Toast.LENGTH_SHORT).show();
+                        deleteFromApi("true");
                     }
                 })
                 .setNegativeButton("Only unregister", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        deleteFromApi(false);
+                        //Toast.makeText(getApplicationContext(), "click2", Toast.LENGTH_SHORT).show();
+                        deleteFromApi(null);
                     }
                 });
         android.support.v7.app.AlertDialog alert = builder.create();
         alert.show();
     }
 
-    public void deleteFromApi(boolean mustDelete){
+    public void deleteFromApi(final String mustDelete){
+        String URL = "https://api.flx.cat/dam2game/unregister";
+
+        StringRequest request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override public void onResponse(String response) {
+                String json = response.toString();
+                Gson gson = new Gson();
+                Type typeToken = new TypeToken<APIResponse>() {}.getType();
+                APIResponse apiResponse = gson.fromJson(json, typeToken);
+                Toast.makeText(getApplicationContext(), json, Toast.LENGTH_SHORT).show();
+                if(apiResponse.getErrorCode() == 0){
+                    //esborrem el token del SharedPreferences
+                    prefsEditor.clear();
+                    prefsEditor.commit();
+
+                    switch(mustDelete) {
+                       case "true":
+                           alertBeforeUnregistry("Account deleted", "All your data was deleted from the API");
+                           break;
+                       default:
+                           alertBeforeUnregistry("Unregistered", "Register with same mail to recover your data");
+
+
+                   }
+                }
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override public void onErrorResponse(VolleyError error) {
+                String message = error.toString();
+                NetworkResponse response = error.networkResponse;
+                if (response != null) {
+                    message = response.statusCode + " " + message;
+                }
+
+
+            }
+
+        }) {
+            @Override protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("token", token);
+                params.put("must_delete", mustDelete);
+                return params;
+            }
+        };
+
+        MyVolley.getInstance(this).add(request);
 
     }
+
 
 
     /**
@@ -297,7 +346,22 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    /**
+     * Alert Dialog appears when user clicks on adjustments or ranking when he is unregistered
+     */
+    public void alertBeforeUnregistry(String msg1, String msg2) {
+        final android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(AdjustmentsActivity.this).create();
+        alertDialog.setTitle(msg1);
+        alertDialog.setMessage(msg2);
+        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "Return menu", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(AdjustmentsActivity.this, MainActivity.class);
 
+                startActivity(intent);
+            }
+        });
+        alertDialog.show();
+    }
 
 
 

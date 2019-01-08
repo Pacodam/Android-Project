@@ -47,7 +47,7 @@ public class RegistryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registry);
 
         //per redireccionar després del registre hem de saber d'on venim, si de ranking,d'ajustaments o main, ho fem
-        //recollint el extra de l'intent
+        //recollint l' extra de l'intent
         Intent i = getIntent();
         func = i.getStringExtra("func");
         //Toast.makeText(getApplicationContext(), func, Toast.LENGTH_SHORT).show();
@@ -234,7 +234,6 @@ public class RegistryActivity extends AppCompatActivity {
 
         }) {
             @Override protected Map<String, String> getParams() {
-                Toast.makeText(getApplicationContext(), "getParams", Toast.LENGTH_SHORT).show();
                 Map<String, String> params = new HashMap<>();
                 params.put("email", editMail.getText().toString());
                 params.put("verify", editCode.getText().toString());

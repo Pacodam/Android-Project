@@ -25,11 +25,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //whe get the token from sharedPreferences (if exist)
+        //whe get the token from sharedPreferences (if exist a token)
         getToken();
-        //token = "3c488b7ff21eacf4b5954275160fe5933f2aa36a6aa0cf31dbfe295e2063edb6be94d27e1b499f3b0f137e258d6594920fd512d2ed08df54b08d8258853559ac";
+        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
-        //if there is not a token on SharedPreferences, an alert dialog appears requiring registry
+        //if there is not a token on SharedPreferences, an alert dialog appears requiring registry for some functions
         if(token == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("You're not registered");
