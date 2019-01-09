@@ -43,18 +43,25 @@ import java.util.Map;
 public class AdjustmentsActivity extends AppCompatActivity implements View.OnClickListener {
 
 
+    //The values we save on the API are the username and the photo
     EditText editName;
     TextView currentPlayer;
+    //ImageView para colocar la fotografía de perfil
+    ImageView photo;
     Uri photoURI;
-    ImageView photo;  //ImageView para colocar la fotografía de perfil
+
     Player player;
+
     String token;
     String mail;
+
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
-    //variables para el AlertDialog
-    Button gallery, camera, delete;
+    //0 if no changes where detected, 1 elsewhere
+    int newPhoto = 0;
+    int newUsername = 0;
+
 
 
     /* On activity create, the token and mail from the user (stored on registry) is recovered from sharedpreferences.
@@ -84,8 +91,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         prefsEditor = prefs.edit();
         mail = prefs.getString("mail", null);
         token = prefs.getString("token", null);
-        //token = "3c488b7ff21eacf4b5954275160fe5933f2aa36a6aa0cf31dbfe295e2063edb6be94d27e1b499f3b0f137e258d6594920fd512d2ed08df54b08d8258853559ac";
-        //Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
+        
         //load of player data from the server (if there is any data present)
         playerDataFromAPI();
 
