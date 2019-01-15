@@ -191,6 +191,7 @@ public class RegistryActivity extends AppCompatActivity {
                     ed.putString("mail", mail);
                     ed.putString("token", apiResponse.getData().toString());
                     ed.apply();
+                    Toast.makeText(getApplicationContext(), apiResponse.getData().toString(), Toast.LENGTH_SHORT).show();
                     //recollim el lloc a on volem anar desde l'string func. Creem una class<?>
                     if(func.equals("ranking")){
                         desti = RankActivity.class;

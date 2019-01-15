@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         //String mail = prefs.getString("mail", "");
         token = prefs.getString("token", null);
-        //Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
     }
 
 

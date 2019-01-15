@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -49,18 +50,20 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
     //ImageView para colocar la fotografía de perfil
     ImageView photo;
     Uri photoURI;
-
     Player player;
-
     String token;
     String mail;
+    //the image encoded to Base64
+    String encodedAvatar;
 
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
 
-    //0 if no changes where detected, 1 elsewhere
-    int newPhoto = 0;
-    int newUsername = 0;
+    /*If the player clicks on save settings, if no changes where made (new username and/or photo), then
+    the app alerts with a message saying that there is nothing to save. If player enters an username
+    or an image, then changesMade will be 1.
+     */
+    int changesMade = 0;
 
 
 
@@ -94,6 +97,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         
         //load of player data from the server (if there is any data present)
         playerDataFromAPI();
+        //editName.setText(player.getName().toString());
 
     }
 
@@ -191,6 +195,10 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         // now set the avatar
         String avatar = (photoURI == null) ? null : photoURI.toString();
         setAvatarImage(avatar, true);
+        /*como conseguir pasar a base64 esto
+        if (avatar != null) {
+            encodedAvatar = Base64.encodeToString(avatar.getBytes(), Base64.DEFAULT);
+        } */
     }
 
     public void setAvatarImage(String avatar, boolean saveToSharedPreferences) {
@@ -211,7 +219,40 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void saveSettings() {
+        String URL = "https://api.flx.cat/dam2game/user";
 
+        StringRequest request = new StringRequest(Request.Method.PUT, URL, new Response.Listener<String>() {
+            @Override public void onResponse(String response) {
+                String json = response.toString();
+                Gson gson = new Gson();
+                Type typeToken = new TypeToken<APIResponse>() {}.getType();
+                APIResponse apiResponse = gson.fromJson(json, typeToken);
+                if(apiResponse.getErrorCode() == 0){
+                    Toast.makeText(getApplicationContext(),"Data saved",Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override public void onErrorResponse(VolleyError error) {
+                String message = error.toString();
+                NetworkResponse response = error.networkResponse;
+                if (response != null) {
+                    message = response.statusCode + " " + message;
+                }
+            }
+
+        }) {
+            @Override protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("token", token);
+                params.put("name", editName.getText().toString());
+                params.put("image", encodedAvatar);
+                return params;
+            }
+        };
+
+        MyVolley.getInstance(this).add(request);
     }
 
     public void deleteAccount() {
@@ -333,6 +374,8 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
                     player = apiResponse.getData();
                     currentPlayer.setText(player.getName());
                     Picasso.get().load(player.getImage()).into(photo);
+                    editName.setText(player.getName().toString());  //posem el nom del player a la capçalera
+                    Toast.makeText(getApplicationContext(), player.getImage(), Toast.LENGTH_SHORT).show();
                     //Toast.makeText(getApplicationContext(), player2.getImage(), Toast.LENGTH_SHORT).show();
                 }
             }
