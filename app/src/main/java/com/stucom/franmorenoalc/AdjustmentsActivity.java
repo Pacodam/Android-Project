@@ -55,6 +55,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
     String mail;
     //the image encoded to Base64
     String encodedAvatar;
+    String avatar;
 
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
@@ -220,17 +221,14 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
 
     public void saveSettings() {
         String URL = "https://api.flx.cat/dam2game/user";
-
         StringRequest request = new StringRequest(Request.Method.PUT, URL, new Response.Listener<String>() {
             @Override public void onResponse(String response) {
                 String json = response.toString();
                 Gson gson = new Gson();
                 Type typeToken = new TypeToken<APIResponse>() {}.getType();
                 APIResponse apiResponse = gson.fromJson(json, typeToken);
-                if(apiResponse.getErrorCode() == 0){
-                    Toast.makeText(getApplicationContext(),"Data saved",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Data saved",Toast.LENGTH_SHORT).show();
 
-                }
             }
 
         }, new Response.ErrorListener() {
@@ -247,7 +245,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
                 Map<String, String> params = new HashMap<>();
                 params.put("token", token);
                 params.put("name", editName.getText().toString());
-                params.put("image", encodedAvatar);
+
                 return params;
             }
         };
