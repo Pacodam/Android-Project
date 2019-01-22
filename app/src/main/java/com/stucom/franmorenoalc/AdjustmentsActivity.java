@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -13,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Xml;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,8 +37,12 @@ import com.stucom.franmorenoalc.model.Player;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
@@ -196,11 +203,36 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
         // now set the avatar
         String avatar = (photoURI == null) ? null : photoURI.toString();
         setAvatarImage(avatar, true);
-        /*como conseguir pasar a base64 esto
-        if (avatar != null) {
-            encodedAvatar = Base64.encodeToString(avatar.getBytes(), Base64.DEFAULT);
-        } */
+
+
+        try {
+            encodedAvatar = Base64.encodeToString(readBytes(photoURI), Base64.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
+
+    public byte[] readBytes(Uri uri) throws IOException {
+        // this dynamically extends to take the bytes you read
+        InputStream inputStream = getContentResolver().openInputStream(uri);
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+
+        // this is storage overwritten on each iteration with bytes
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        // we need to know how may bytes were read to write them to the byteBuffer
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+
+        // and then we can return your byte array.
+        return byteBuffer.toByteArray();
+    }
+
+
 
     public void setAvatarImage(String avatar, boolean saveToSharedPreferences) {
         Log.d("flx", "PlayerAvatar = " + avatar);
@@ -228,7 +260,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
                 Type typeToken = new TypeToken<APIResponse>() {}.getType();
                 APIResponse apiResponse = gson.fromJson(json, typeToken);
                 Toast.makeText(getApplicationContext(),"Data saved",Toast.LENGTH_SHORT).show();
-
+                currentPlayer.setText(editName.getText().toString());
             }
 
         }, new Response.ErrorListener() {
@@ -245,6 +277,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
                 Map<String, String> params = new HashMap<>();
                 params.put("token", token);
                 params.put("name", editName.getText().toString());
+                params.put("image", encodedAvatar);
 
                 return params;
             }
