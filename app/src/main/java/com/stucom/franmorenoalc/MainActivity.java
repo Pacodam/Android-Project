@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     a cuatro Activities.
      */
 
+
     String token;
     String function;
     Class<?> desti = RegistryActivity.class;
@@ -26,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //whe get the token from sharedPreferences (if exist a token)
-        getToken();
-        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
+        //getToken();
+        //Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
 
         //if there is not a token on SharedPreferences, an alert dialog appears requiring registry for some functions
         if(token == null) {
