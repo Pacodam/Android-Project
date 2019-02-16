@@ -3,14 +3,18 @@
     <string name="google_api_key" translatable="false">AIzaSyCB--f_reP8v262JnkscG1MCw6eT8nsOC4 </string>
     <string name="app_name">FranMorenoAlc</string>
 
-    <string name="adjustments">User adjustments</string>
-    <string name="btnRegistro">Registro</string>
+    <string name="adjustments">User settings</string>
+    <string name="btnRegistro">Registration</string>
     <string name="btnPlay">Play</string>
     <string name="btnRank">Ranking</string>
     <string name="btnAdjustments">Adjustments</string>
     <string name="btnQuant">Who we are</string>
 
-    <string name="hintPlay">You clicked PLAY</string>
+    <string name="hintPlay">"PLAY"</string>
+    <string name="random">"RANDOM"</string>
+    <string name="send">"SEND"</string>
+
+
     <string name="hintRank">RANKING</string>
 
     <string name="currentPlayer">current player</string>

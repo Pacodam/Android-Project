@@ -42,6 +42,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,10 +53,8 @@ public class RankActivity extends AppCompatActivity {
     TextView textView;
     RecyclerView recyclerView;
     SwipeRefreshLayout swipeRefreshLayout;
-    Spinner spinner;
     private List<Player> players;
     private List<Player> players2;
-    Dialog myDialog;
 
 
     @Override
@@ -66,6 +65,7 @@ public class RankActivity extends AppCompatActivity {
         //we load token and mail stored in SharedPreferences
         SharedPreferences prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         token = prefs.getString("token", null);
+        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
         textView = findViewById(R.id.textView);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -111,6 +111,7 @@ public class RankActivity extends AppCompatActivity {
                                     players2.add(p);
                                 }
                             }
+                            Collections.sort(players2);
                             PlayersAdapter adapter = new PlayersAdapter(players2);
                             adapter.setOnClickListener(new View.OnClickListener(){
                                 @Override
@@ -226,6 +227,7 @@ public class RankActivity extends AppCompatActivity {
                 }
                 else{
                     sendMessageToUser(player.getId(), text);
+                    dialog.cancel();
                     //Toast.makeText(getApplicationContext(), "sent",Toast.LENGTH_SHORT).show();
                 }
 

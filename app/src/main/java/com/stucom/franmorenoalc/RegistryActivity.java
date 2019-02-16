@@ -29,19 +29,23 @@ import java.util.Map;
 public class RegistryActivity extends AppCompatActivity {
 
 
+    //linear layouts
+    LinearLayout container1;
+    LinearLayout container2;
+
     //component vars
     static EditText editMail;
     Button verifyMail;
     static EditText editCode;
     Button verifyCode;
+
     //mail variable
     static String mail;
-    //contenidors per amargar i fer apareixer
-    LinearLayout linearLay3;
-    LinearLayout linearLay4;
+
     //func is used to know where to redirect after registry
     String func;
-    //desti is used to store the Activity to redirect after registry
+
+    //desti is used to store the activity to redirect after registry
     Class<?> desti;
 
 
@@ -51,23 +55,21 @@ public class RegistryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registry);
 
         //per redireccionar després del registre hem de saber d'on venim, si de ranking,d'ajustaments o main, ho fem
-        //recollint l' extra de l'intent
+        //recollint el extra de l'intent
         Intent i = getIntent();
         func = i.getStringExtra("func");
         //Toast.makeText(getApplicationContext(), func, Toast.LENGTH_SHORT).show();
 
         //agafem els elements
-        linearLay3 = findViewById(R.id.linearLayout3);
-        linearLay4 = findViewById(R.id.linearLayout4);
+        container1 = findViewById(R.id.container1);
+        container2 = findViewById(R.id.container2);
         editMail = findViewById(R.id.mailHint);
         verifyMail = findViewById(R.id.btnRegistro);
         editCode = findViewById(R.id.verifyHint);
         verifyCode = findViewById(R.id.buttonVerify);
 
-        //amaguem l'edit del codi de verificació i el botó d'enviar. Al fer la primera crida amb exit la mostrarem de nou
-        //editCode.setVisibility(View.INVISIBLE);
-        //verifyCode.setVisibility(View.INVISIBLE);
-        linearLay4.setVisibility(View.INVISIBLE);
+        //amaguem el container2 fins que enviem el mail
+        container2.setVisibility(View.INVISIBLE);
 
         //quan es clica enviar mail s'activa la primera crida a registre. Si és exitosa, es faran visibles els elements de verificació
         verifyMail.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +80,7 @@ public class RegistryActivity extends AppCompatActivity {
             }
         });
 
-        //
+        //quan s'ha introduit el codi de verificació rebut, al clicar al butó s'envia i es confirma el registre
         verifyCode.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -136,22 +138,12 @@ public class RegistryActivity extends AppCompatActivity {
                 if(apiResponse.getErrorCode() == 0){
                     mail = editMail.getText().toString(); //guardem el mail
 
-                    //ahora se mostrarian los botones o sino un alert con el aviso para introducir el codigo verificacion
-                    linearLay4.setVisibility(View.VISIBLE);
-                       //editCode.setVisibility(View.VISIBLE);
-                       //verifyCode.setVisibility(View.VISIBLE);
+                    //mostrem container2
+                    container2.setVisibility(View.VISIBLE);
 
-                    //amaguem editText de mail i buto
-                    linearLay3.setVisibility(View.INVISIBLE);
-                      //editMail.setVisibility(View.INVISIBLE);
-                      //verifyMail.setVisibility(View.INVISIBLE);
-
+                    //amaguem container1
+                    container1.setVisibility(View.INVISIBLE);
                 }
-                /*
-                else{
-                    editCode.setText("no esta bien");
-                }*/
-
             }
 
             }, new Response.ErrorListener() {
@@ -176,7 +168,6 @@ public class RegistryActivity extends AppCompatActivity {
 
     }
 
-    //final static String URL = "https://api.flx.cat/dam2game/register";
 
     /**
      * Segona crida per verificació. S'envia el mail i el codi de verificació
@@ -188,7 +179,7 @@ public class RegistryActivity extends AppCompatActivity {
 
         StringRequest request = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override public void onResponse(String response) {
-                String json = response.toString();
+                String json = response;
                 Gson gson = new Gson();
                 Type typeToken = new TypeToken<APIResponse>() {}.getType();
                 APIResponse apiResponse = gson.fromJson(json, typeToken);
@@ -200,7 +191,6 @@ public class RegistryActivity extends AppCompatActivity {
                     ed.putString("mail", mail);
                     ed.putString("token", apiResponse.getData().toString());
                     ed.apply();
-                    Toast.makeText(getApplicationContext(), apiResponse.getData().toString(), Toast.LENGTH_SHORT).show();
                     //recollim el lloc a on volem anar desde l'string func. Creem una class<?>
                     if(func.equals("ranking")){
                         desti = RankActivity.class;
@@ -224,10 +214,6 @@ public class RegistryActivity extends AppCompatActivity {
 
                     alertDialog.show();
                 }
-                /*
-                else{
-                    editCode.setText("no esta bien");
-                }*/
 
             }
 
@@ -244,6 +230,7 @@ public class RegistryActivity extends AppCompatActivity {
 
         }) {
             @Override protected Map<String, String> getParams() {
+                //Toast.makeText(getApplicationContext(), "getParams", Toast.LENGTH_SHORT).show();
                 Map<String, String> params = new HashMap<>();
                 params.put("email", editMail.getText().toString());
                 params.put("verify", editCode.getText().toString());
@@ -254,10 +241,5 @@ public class RegistryActivity extends AppCompatActivity {
         MyVolley.getInstance(this).add(request);
 
     }
-
-
-
-
-
 
 }

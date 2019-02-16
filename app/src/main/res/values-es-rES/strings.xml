@@ -4,7 +4,7 @@
     <string name="btnRank">Rankings</string>
     <string name="btnAdjustments">Ajustes</string>
     <string name="btnQuant">Quienes somos</string>
-    <string name="hintPlay">Clicaste JUGAR</string>
+    <string name="hintPlay">" JUGAR"</string>
     <string name="hintRank">Clicaste RANKINGS</string>
     <string name="yourName">Introduce tu nombre</string>
     <string name="yourMail">Introduce tu mail</string>
@@ -18,12 +18,20 @@
     <string name="buttonUpload">Galeria</string>
     <string name="dialogTitle">Opciones de foto</string>
     <string name="btnPlay">Jugar</string>
-    <string name="codeText">Introduce el código recibido</string>
-    <string name="btnVerify">Enviar</string>
-    <string name="verifyHint">Tu código</string>
-    <string name="verifyText">Introduce tu email</string>
-    <string name="btnSendMail">Enviar</string>
-    <string name="mailHint">Introduce tu mail</string>
+    <string name="random">"Aleatorio"</string>
+    <string name="send">"ENVIAR"</string>
+    <string name="adjustments">Ajustes de usuario</string>
+    <string name="btnRegistro">Registro</string>
+    <string name="currentPlayer">Jugador actual</string>
+    <string name="uploadGallery">Galería</string>
+    <string name="deleteImage">Borrar imagen</string>
+    <string name="saveSettings">Guardar cambios</string>
+    <string name="unregister">Eliminar cuenta</string>
     <string name="registroAct">Nuevo registro</string>
-    <string name="unregister">Elimina tu cuenta</string>
+    <string name="mailHint">Introduce email</string>
+    <string name="btnSendMail">Enviar</string>
+    <string name="verifyText">Introduce email, recibirás código de verificación</string>
+    <string name="verifyHint">Tu código</string>
+    <string name="btnVerify">Enviar</string>
+    <string name="codeText">Introduce el código recibido en tu bandeja de entrada</string>
 </resources>

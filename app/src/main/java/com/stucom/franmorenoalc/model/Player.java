@@ -92,4 +92,10 @@ public class Player {
         prefsEditor.apply();
     }
 
+    @Override
+    public int compareTo(Player o){
+        //return Integer.parseInt(totalScore) - Integer.parseInt(o.getTotalScore());
+        return Integer.parseInt(o.getTotalScore()) - Integer.parseInt(totalScore);
+    }
+
 }
