@@ -65,9 +65,7 @@ public class RankActivity extends AppCompatActivity {
 
         //we load token and mail stored in SharedPreferences
         SharedPreferences prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
-        //token = prefs.getString("token", null);
-        token = "3c488b7ff21eacf4b5954275160fe5933f2aa36a6aa0cf31dbfe295e2063edb6be94d27e1b499f3b0f137e258d6594920fd512d2ed08df54b08d8258853559ac";
-        //Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
+        token = prefs.getString("token", null);
         textView = findViewById(R.id.textView);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

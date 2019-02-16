@@ -28,7 +28,7 @@ public class Player {
     @SerializedName("lastScore")
     private String lastScore;
     //@SerializedName("scores")
-   // private List<Score> scores;
+    private List<Score> scores;
 
     public Player() {
     }

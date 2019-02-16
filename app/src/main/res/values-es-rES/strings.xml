@@ -18,4 +18,12 @@
     <string name="buttonUpload">Galeria</string>
     <string name="dialogTitle">Opciones de foto</string>
     <string name="btnPlay">Jugar</string>
+    <string name="codeText">Introduce el código recibido</string>
+    <string name="btnVerify">Enviar</string>
+    <string name="verifyHint">Tu código</string>
+    <string name="verifyText">Introduce tu email</string>
+    <string name="btnSendMail">Enviar</string>
+    <string name="mailHint">Introduce tu mail</string>
+    <string name="registroAct">Nuevo registro</string>
+    <string name="unregister">Elimina tu cuenta</string>
 </resources>

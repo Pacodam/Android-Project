@@ -4,31 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistryActivity">
+    tools:context=".RegistryActivity"
+    tools:layout_editor_absoluteY="25dp">
 
     <TextView
         android:id="@+id/registroAct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginTop="16dp"
         android:text="@string/registroAct"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
-        android:layout_height="322dp"
+        android:layout_height="206dp"
+        android:layout_marginTop="32dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/registroAct">
 
         <TextView
             android:id="@+id/verifyText"
@@ -41,14 +42,15 @@
 
         <EditText
             android:id="@+id/mailHint"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             android:autofillHints=""
             android:ems="10"
             android:hint="@string/mailHint"
             android:inputType="text|textEmailAddress"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,18 +58,33 @@
 
         <Button
             android:id="@+id/btnRegistro"
-            android:layout_width="match_parent"
+            android:layout_width="259dp"
             android:layout_height="wrap_content"
             android:text="@string/btnSendMail"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="143dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registroAct">
 
         <TextView
             android:id="@+id/codeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/codeText" />
+            android:text="@string/codeText"
+            android:visibility="visible" />
 
         <EditText
             android:id="@+id/verifyHint"
@@ -90,7 +107,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="379dp" />
-
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

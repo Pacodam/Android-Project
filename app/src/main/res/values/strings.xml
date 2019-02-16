@@ -42,7 +42,7 @@
     <string name="verifyHint">Your code</string>
     <string name="btnVerify">Send</string>
     <string name="codeText">Now enter the received code on your inbox:</string>
-
+    <string name="yourMail">Enter your mail</string>
 
 
 </resources>

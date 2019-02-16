@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -35,9 +36,12 @@ public class RegistryActivity extends AppCompatActivity {
     Button verifyCode;
     //mail variable
     static String mail;
+    //contenidors per amargar i fer apareixer
+    LinearLayout linearLay3;
+    LinearLayout linearLay4;
     //func is used to know where to redirect after registry
     String func;
-    //desti is used to store the activity to redirect after registry
+    //desti is used to store the Activity to redirect after registry
     Class<?> desti;
 
 
@@ -47,20 +51,23 @@ public class RegistryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registry);
 
         //per redireccionar després del registre hem de saber d'on venim, si de ranking,d'ajustaments o main, ho fem
-        //recollint el extra de l'intent
+        //recollint l' extra de l'intent
         Intent i = getIntent();
         func = i.getStringExtra("func");
         //Toast.makeText(getApplicationContext(), func, Toast.LENGTH_SHORT).show();
 
         //agafem els elements
+        linearLay3 = findViewById(R.id.linearLayout3);
+        linearLay4 = findViewById(R.id.linearLayout4);
         editMail = findViewById(R.id.mailHint);
         verifyMail = findViewById(R.id.btnRegistro);
         editCode = findViewById(R.id.verifyHint);
         verifyCode = findViewById(R.id.buttonVerify);
 
         //amaguem l'edit del codi de verificació i el botó d'enviar. Al fer la primera crida amb exit la mostrarem de nou
-        editCode.setVisibility(View.INVISIBLE);
-        verifyCode.setVisibility(View.INVISIBLE);
+        //editCode.setVisibility(View.INVISIBLE);
+        //verifyCode.setVisibility(View.INVISIBLE);
+        linearLay4.setVisibility(View.INVISIBLE);
 
         //quan es clica enviar mail s'activa la primera crida a registre. Si és exitosa, es faran visibles els elements de verificació
         verifyMail.setOnClickListener(new View.OnClickListener() {
@@ -130,12 +137,14 @@ public class RegistryActivity extends AppCompatActivity {
                     mail = editMail.getText().toString(); //guardem el mail
 
                     //ahora se mostrarian los botones o sino un alert con el aviso para introducir el codigo verificacion
-                    editCode.setVisibility(View.VISIBLE);
-                    verifyCode.setVisibility(View.VISIBLE);
+                    linearLay4.setVisibility(View.VISIBLE);
+                       //editCode.setVisibility(View.VISIBLE);
+                       //verifyCode.setVisibility(View.VISIBLE);
 
                     //amaguem editText de mail i buto
-                    editMail.setVisibility(View.INVISIBLE);
-                    verifyMail.setVisibility(View.INVISIBLE);
+                    linearLay3.setVisibility(View.INVISIBLE);
+                      //editMail.setVisibility(View.INVISIBLE);
+                      //verifyMail.setVisibility(View.INVISIBLE);
 
                 }
                 /*
@@ -191,6 +200,7 @@ public class RegistryActivity extends AppCompatActivity {
                     ed.putString("mail", mail);
                     ed.putString("token", apiResponse.getData().toString());
                     ed.apply();
+                    Toast.makeText(getApplicationContext(), apiResponse.getData().toString(), Toast.LENGTH_SHORT).show();
                     //recollim el lloc a on volem anar desde l'string func. Creem una class<?>
                     if(func.equals("ranking")){
                         desti = RankActivity.class;
@@ -234,7 +244,6 @@ public class RegistryActivity extends AppCompatActivity {
 
         }) {
             @Override protected Map<String, String> getParams() {
-                Toast.makeText(getApplicationContext(), "getParams", Toast.LENGTH_SHORT).show();
                 Map<String, String> params = new HashMap<>();
                 params.put("email", editMail.getText().toString());
                 params.put("verify", editCode.getText().toString());
