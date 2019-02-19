@@ -12,7 +12,7 @@
     <string name="textViewExplica">Actualmente cursando DAM en Stucom, Barcelona. \n Este
         es el primer proyecto android, trabajando en ello. </string>
     <string name="gmapButton">Gmap de Stucom</string>
-    <string name="uploadImage">Opciones</string>
+    <string name="uploadImage">Camara</string>
     <string name="buttonCam">Camara</string>
     <string name="buttonDelete">Elimina foto</string>
     <string name="buttonUpload">Galeria</string>
@@ -34,4 +34,24 @@
     <string name="verifyHint">Tu código</string>
     <string name="btnVerify">Enviar</string>
     <string name="codeText">Introduce el código recibido en tu bandeja de entrada</string>
+    <string name="notRegistered">No estas registrado</string>
+    <string name="someFunctions">Limitación para algunas funciones</string>
+    <string name="notAllowed">Opción no permitida</string>
+    <string name="registration">Requiere registrarse</string>
+    <string name="register">Registrar ahora</string>
+    <string name="later">Más tarde</string>
+    <string name="writeSomething">Escribe algo</string>
+    <string name="dataSaved">Datos guardados</string>
+    <string name="deleteAccount">Borrar cuenta</string>
+    <string name="confirmDelete">Confirma que quieres borrar</string>
+    <string name="sure">Por supuesto</string>
+    <string name="notSure">Pueeessss... aún no</string>
+    <string name="deleteType">Tipo de borrado</string>
+    <string name="deleteAll">Borrar todo</string>
+    <string name="unregisterDel">Solo desregistrar</string>
+    <string name="deleteSuccess">Cuenta borrada</string>
+    <string name="deleteMsg">Datos borrados de la API</string>
+    <string name="unregisterSuccess">Desregistro exitoso</string>
+    <string name="unregisterMsg">Datos recuperables si te registras con mismo mail</string>
+    <string name="retMenu">Regresa al menu</string>
 </resources>

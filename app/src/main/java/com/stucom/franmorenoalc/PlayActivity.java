@@ -89,8 +89,8 @@ public class PlayActivity extends AppCompatActivity {
             @Override protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("token", token);
-                params.put("score", String.valueOf(score));
                 params.put("level", String.valueOf(level));
+                params.put("score", String.valueOf(score));
                 return params;
             }
         };

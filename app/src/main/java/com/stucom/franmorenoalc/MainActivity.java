@@ -19,25 +19,31 @@ public class MainActivity extends AppCompatActivity {
     //ef4d11182aa423caf0cf52537da64a7b6624974d1548c7ed44dc4529b4af194c4f56b4ac3e4e19a20d9776d77f81d0ac0121cc7c1365ce795e6423122fee7970
     String token;
     String function;
-    Class<?> desti = RegistryActivity.class;
+    static Class<?> desti = RegistryActivity.class;
+    static SharedPreferences prefs;
+    static SharedPreferences.Editor prefsEditor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         //miramos si hay un token guardado en sharedPreferences, si no lo hay obtendremos null
         getToken();
+        
 
 
 
         //si no hay un token en SharedPreferences, aparecerá un alert dialog invitando a registrarse
         if(token == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("You're not registered");
-            builder.setMessage("Some functions may not work")
+            builder.setTitle(R.string.notRegistered);
+            builder.setMessage(R.string.someFunctions)
                     .setCancelable(false)
-                    .setPositiveButton("Register", new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.register, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             Intent intent = new Intent(MainActivity.this, desti);
                             function = "main";
@@ -45,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     })
-                    .setNegativeButton("Later", new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.later, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
                         }
@@ -109,7 +115,10 @@ public class MainActivity extends AppCompatActivity {
      * Saves token into String if exists. If not, the String will have null value.
      */
     public void getToken() {
-        SharedPreferences prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
+        prefsEditor = prefs.edit();
+        //prefsEditor.clear();
+        //prefsEditor.commit();
         //String mail = prefs.getString("mail", "");
         token = prefs.getString("token", null);
         Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
@@ -122,16 +131,16 @@ public class MainActivity extends AppCompatActivity {
      */
     public void alertRegistry() {
         final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-        alertDialog.setTitle("Option not allowed");
-        alertDialog.setMessage("You should register.");
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Register", new DialogInterface.OnClickListener() {
+        alertDialog.setTitle(R.string.notAllowed);
+        alertDialog.setMessage(getApplicationContext().getString(R.string.registration));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getApplicationContext().getString(R.string.register), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(MainActivity.this, desti);
                 intent.putExtra("func", function);
                 startActivity(intent);
             }
         });
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Later", new DialogInterface.OnClickListener() {
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getApplicationContext().getString(R.string.later), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.cancel();
             }

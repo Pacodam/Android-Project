@@ -250,7 +250,7 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
                 Gson gson = new Gson();
                 Type typeToken = new TypeToken<APIResponse>() {}.getType();
                 APIResponse apiResponse = gson.fromJson(json, typeToken);
-                Toast.makeText(getApplicationContext(),"Data saved",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.dataSaved,Toast.LENGTH_SHORT).show();
                 currentPlayer.setText(editName.getText().toString());
             }
 
@@ -279,15 +279,15 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
 
     public void deleteAccount() {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setTitle("Delete account");
-        builder.setMessage("Please confirm you want to delete")
+        builder.setTitle(R.string.deleteAccount);
+        builder.setMessage(R.string.confirmDelete)
                 .setCancelable(false)
-                .setPositiveButton("Yes, for sure", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         deleteAccountType();
                     }
                 })
-                .setNegativeButton("Mmmmm... not yet", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.notSure, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
@@ -299,16 +299,16 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
 
     public void deleteAccountType(){
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setTitle("Delete account");
-        builder.setMessage("Select type of deleting")
+        builder.setTitle(R.string.deleteAccount);
+        builder.setMessage(R.string.deleteType)
                 .setCancelable(false)
-                .setPositiveButton("Delete everything", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.deleteAll, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //Toast.makeText(getApplicationContext(), "click1", Toast.LENGTH_SHORT).show();
                         deleteFromApi("true");
                     }
                 })
-                .setNegativeButton("Only unregister", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.unregisterDel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //Toast.makeText(getApplicationContext(), "click2", Toast.LENGTH_SHORT).show();
                         deleteFromApi(null);
@@ -330,17 +330,14 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(getApplicationContext(), json, Toast.LENGTH_SHORT).show();
                 if(apiResponse.getErrorCode() == 0){
                     //esborrem el token del SharedPreferences
-                    prefsEditor.clear();
-                    prefsEditor.commit();
+                    MainActivity.prefsEditor.clear();
+                    MainActivity.prefsEditor.commit();
 
-                    switch(mustDelete) {
-                        case "true":
-                            alertBeforeUnregistry("Account deleted", "All your data was deleted from the API");
-                            break;
-                        default:
-                            alertBeforeUnregistry("Unregistered", "Register with same mail to recover your data");
-
-
+                    if(mustDelete != null) {
+                        alertBeforeUnregistry1();
+                    }
+                    else{
+                        alertBeforeUnregistry2();
                     }
                 }
 
@@ -361,7 +358,9 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
             @Override protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("token", token);
-                params.put("must_delete", mustDelete);
+                if(mustDelete.equals("true")) {
+                    params.put("must_delete", mustDelete);
+                }
                 return params;
             }
         };
@@ -373,14 +372,26 @@ public class AdjustmentsActivity extends AppCompatActivity implements View.OnCli
     /**
      * Alert Dialog appears when user clicks on adjustments or ranking when he is unregistered
      */
-    public void alertBeforeUnregistry(String msg1, String msg2) {
+    public void alertBeforeUnregistry1() {
         final android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(AdjustmentsActivity.this).create();
-        alertDialog.setTitle(msg1);
-        alertDialog.setMessage(msg2);
-        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "Return menu", new DialogInterface.OnClickListener() {
+        alertDialog.setTitle(getApplicationContext().getString(R.string.deleteSuccess));
+        alertDialog.setMessage(getApplicationContext().getString(R.string.deleteMsg));
+        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, getApplicationContext().getString(R.string.retMenu), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(AdjustmentsActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+        alertDialog.show();
+    }
 
+    public void alertBeforeUnregistry2() {
+        final android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(AdjustmentsActivity.this).create();
+        alertDialog.setTitle(getApplicationContext().getString(R.string.unregisterSuccess));
+        alertDialog.setMessage(getApplicationContext().getString(R.string.unregisterMsg));
+        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, getApplicationContext().getString(R.string.retMenu), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(AdjustmentsActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });

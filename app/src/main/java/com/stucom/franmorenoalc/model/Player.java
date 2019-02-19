@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Player {
+public class Player implements Comparable<Player>{
 
     //attributes created with registry
     private String token;
