@@ -1,6 +1,9 @@
 package com.stucom.franmorenoalc;
 
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -26,6 +29,10 @@ import java.util.Map;
 
 public class PlayActivity extends AppCompatActivity
 implements WormyView.WormyListener {
+
+    // Sensors' related code
+
+    private SensorManager sensorManager;
 
     private UserScoreView userScoreView;
     private int score;
@@ -55,7 +62,27 @@ implements WormyView.WormyListener {
             }
         });
         wormyView.setWormyListener(this);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
     }
+
+   /*
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        // Read the sensor's information
+        float ax = sensorEvent.values[0];
+        float ay = sensorEvent.values[1];
+        float az = sensorEvent.values[2];
+        *//*
+        tvAccelerationX.setText(getString(R.string.accelerationX, ax));
+        tvAccelerationY.setText(getString(R.string.accelerationY, ay));
+        tvAccelerationZ.setText(getString(R.string.accelerationZ, az));
+        accelerometerView.onSensorChanged(sensorEvent); *//*
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        //accelerometerView.onAccuracyChanged(sensor, accuracy);
+    }*/
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {

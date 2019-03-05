@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.stucom.wormy.WormyView
+    <com.stucom.franmorenoalc.views.WormyView
         android:id="@+id/wormyView"
         android:layout_width="0dp"
         android:layout_height="0dp"
