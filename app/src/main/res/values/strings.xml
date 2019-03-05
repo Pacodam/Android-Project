@@ -71,4 +71,9 @@
     <string name="unregisterMsg">Register with same mail to recover your data</string>
     <string name="retMenu">Return menu</string>
 
+    <string name="app_name2">Wormy</string>
+    <string name="new_game">New Game</string>
+    <string name="you_lost">You lost!</string>
+
+
 </resources>
