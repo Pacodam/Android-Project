@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     a cuatro Activities.
      */
 
-    //ef4d11182aa423caf0cf52537da64a7b6624974d1548c7ed44dc4529b4af194c4f56b4ac3e4e19a20d9776d77f81d0ac0121cc7c1365ce795e6423122fee7970
+
     String token;
     String function;
     static Class<?> desti = RegistryActivity.class;
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         //prefsEditor.commit();
         //String mail = prefs.getString("mail", "");
         token = prefs.getString("token", null);
-        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
     }
 
 
