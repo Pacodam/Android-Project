@@ -54,6 +54,10 @@
     <string name="unregisterSuccess">Desregistro exitoso</string>
     <string name="unregisterMsg">Datos recuperables si te registras con mismo mail</string>
     <string name="retMenu">Regresa al menu</string>
-    <string name="uploadGallery">Galería</string>
-    <string name="uploadGallery">Galeria</string>
+
+    <string name="app_name2">Wormy</string>
+    <string name="new_game">New Game</string>
+    <string name="you_lost">You lost!</string>
+
+
 </resources>

@@ -3,7 +3,10 @@ package com.stucom.franmorenoalc;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -14,19 +17,24 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.stucom.franmorenoalc.views.UserScoreView;
+import com.stucom.franmorenoalc.views.WormyView;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class PlayActivity extends AppCompatActivity {
+public class PlayActivity extends AppCompatActivity
+implements WormyView.WormyListener {
 
     private UserScoreView userScoreView;
     private int score;
     private int level;
     private String token;
     private SharedPreferences prefs;
+
+    private WormyView wormyView;
+    private TextView tvScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +44,50 @@ public class PlayActivity extends AppCompatActivity {
         prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         token = prefs.getString("token", null);
 
-        userScoreView = findViewById(R.id.userScoreView);
+        wormyView = findViewById(R.id.wormyView);
+        Button btnNewGame = findViewById(R.id.btnNewGame);
+        tvScore = findViewById(R.id.tvScore);
+        btnNewGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvScore.setText("0");
+                wormyView.newGame();
+            }
+        });
+        wormyView.setWormyListener(this);
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        switch (event.getKeyCode()) {
+            case KeyEvent.KEYCODE_A:
+                wormyView.update(0, +10);
+                break;
+            case KeyEvent.KEYCODE_Q:
+                wormyView.update(0, -10);
+                break;
+            case KeyEvent.KEYCODE_O:
+                wormyView.update(-10, 0);
+                break;
+            case KeyEvent.KEYCODE_P:
+                wormyView.update(+10, 0);
+                break;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public void scoreUpdated(View view, int score) {
+        tvScore.setText(String.valueOf(score));
+    }
+
+    @Override
+    public void gameLost(View view) {
+        Toast.makeText(this, getString(R.string.you_lost), Toast.LENGTH_LONG).show();
+    }
+
+}
+        /*//userScoreView = findViewById(R.id.userScoreView);
         findViewById(R.id.btnRandom).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,12 +104,13 @@ public class PlayActivity extends AppCompatActivity {
                 saveScore(token, 1, score);
             }
         });
+*/
 
-    }
+
 
     /**
      * Al clicar en enviar la puntuacion obtenida se guarda
-     */
+     *//*
     public  void saveScore(final String token, final int score, final int level) {
 
 
@@ -101,3 +153,4 @@ public class PlayActivity extends AppCompatActivity {
 
 
 }
+*/
