@@ -3,6 +3,7 @@ package com.stucom.franmorenoalc;
 import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +29,7 @@ import java.util.Map;
 
 
 public class PlayActivity extends AppCompatActivity
-implements WormyView.WormyListener {
+implements WormyView.WormyListener, SensorEventListener {
 
     // Sensors' related code
 
@@ -59,30 +60,46 @@ implements WormyView.WormyListener {
             public void onClick(View v) {
                 tvScore.setText("0");
                 wormyView.newGame();
+                //incorporació de música
+
             }
         });
         wormyView.setWormyListener(this);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
     }
 
-   /*
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Connect the sensor's listener to the view
+        Sensor sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (sensor != null) {
+            sensorManager.registerListener((SensorEventListener) this, sensor, SensorManager.SENSOR_DELAY_UI);
+        }
+    }
+
+
+    @Override
+    public void onPause() {
+        // Nicely disconnect the sensor's listener from the view
+        sensorManager.unregisterListener(this);
+        super.onPause();
+    }
+
+
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         // Read the sensor's information
         float ax = sensorEvent.values[0];
         float ay = sensorEvent.values[1];
-        float az = sensorEvent.values[2];
-        *//*
-        tvAccelerationX.setText(getString(R.string.accelerationX, ax));
-        tvAccelerationY.setText(getString(R.string.accelerationY, ay));
-        tvAccelerationZ.setText(getString(R.string.accelerationZ, az));
-        accelerometerView.onSensorChanged(sensorEvent); *//*
+        wormyView.update(ax, ay);
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        //accelerometerView.onAccuracyChanged(sensor, accuracy);
-    }*/
+
+    }
+
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
