@@ -177,8 +177,8 @@ public class WormyView extends View {
            if (++counter == slowdown) {
                counter = 0;
                int newX = wormX, newY = wormY;
-               if (accelerationX < -2) { newX--; worm = wormLeft; }
-               if (accelerationX > +2) { newX++; worm = wormRight; }
+               if (accelerationX < -2) { newX++; worm = wormRight; }
+               if (accelerationX > +2) { newX--; worm = wormLeft; }
                if (accelerationY < -2) newY--;
                if (accelerationY > +2) newY++;
                int idx = newY * nCols + newX;
