@@ -5,6 +5,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -44,6 +47,10 @@ implements WormyView.WormyListener, SensorEventListener {
     private WormyView wormyView;
     private TextView tvScore;
 
+    SoundPool soundPool;
+    boolean loaded;
+    int coinEat, laugh2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +58,6 @@ implements WormyView.WormyListener, SensorEventListener {
 
         prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         token = prefs.getString("token", null);
-
         wormyView = findViewById(R.id.wormyView);
         Button btnNewGame = findViewById(R.id.btnNewGame);
         tvScore = findViewById(R.id.tvScore);
@@ -66,7 +72,26 @@ implements WormyView.WormyListener, SensorEventListener {
         });
         wormyView.setWormyListener(this);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+        //gestió dels sons
+        this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            soundPool = new SoundPool.Builder().setMaxStreams(15).build();
+        }
+        else {
+            soundPool = new SoundPool(15, AudioManager.STREAM_MUSIC, 0);
+        }
+
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                loaded = true;
+            }
+        });
+
+        coinEat = soundPool.load(this, R.raw.coinget, 1);
+        laugh2 = soundPool.load(this, R.raw.laugh2, 1);
     }
+
 
     @Override
     public void onResume() {
@@ -122,11 +147,17 @@ implements WormyView.WormyListener, SensorEventListener {
 
     @Override
     public void scoreUpdated(View view, int score) {
+        if (loaded) {
+            soundPool.play(coinEat, 1f, 1f, 1, 0, 1f);
+        }
         tvScore.setText(String.valueOf(score));
     }
 
     @Override
     public void gameLost(View view) {
+        if (loaded) {
+            soundPool.play(laugh2, 1f, 1f, 1, 0, 1f);
+        }
         Toast.makeText(this, getString(R.string.you_lost), Toast.LENGTH_LONG).show();
     }
 

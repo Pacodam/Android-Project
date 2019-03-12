@@ -210,6 +210,7 @@ public class WormyView extends View {
        public interface WormyListener {
            void scoreUpdated(View view, int score);
            void gameLost(View view);
+
        }
 
        private WormyListener listener;
