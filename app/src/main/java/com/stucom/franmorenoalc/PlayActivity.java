@@ -6,6 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -47,14 +48,16 @@ implements WormyView.WormyListener, SensorEventListener {
     private WormyView wormyView;
     private TextView tvScore;
 
-    SoundPool soundPool;
-    boolean loaded;
-    int coinEat, laugh2;
+    private SoundPool soundPool;
+    private boolean loaded;
+    private int coinEat, laugh2;
+    private MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
 
         prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         token = prefs.getString("token", null);
@@ -67,6 +70,9 @@ implements WormyView.WormyListener, SensorEventListener {
                 tvScore.setText("0");
                 wormyView.newGame();
                 //incorporació de música
+                mp.release();
+                mp = MediaPlayer.create(PlayActivity.this, R.raw.netherplace);
+                mp.start();
 
             }
         });
@@ -90,6 +96,11 @@ implements WormyView.WormyListener, SensorEventListener {
 
         coinEat = soundPool.load(this, R.raw.coinget, 1);
         laugh2 = soundPool.load(this, R.raw.laugh2, 1);
+
+        mp = new MediaPlayer();
+        mp.release();
+        mp = MediaPlayer.create(PlayActivity.this, R.raw.gamemenu);
+        mp.start();
     }
 
 
@@ -101,6 +112,7 @@ implements WormyView.WormyListener, SensorEventListener {
         if (sensor != null) {
             sensorManager.registerListener((SensorEventListener) this, sensor, SensorManager.SENSOR_DELAY_UI);
         }
+
     }
 
 
@@ -108,6 +120,7 @@ implements WormyView.WormyListener, SensorEventListener {
     public void onPause() {
         // Nicely disconnect the sensor's listener from the view
         sensorManager.unregisterListener(this);
+        mp.stop();
         super.onPause();
     }
 
@@ -158,6 +171,10 @@ implements WormyView.WormyListener, SensorEventListener {
         if (loaded) {
             soundPool.play(laugh2, 1f, 1f, 1, 0, 1f);
         }
+        //incorporació de música
+        mp.release();
+        mp = MediaPlayer.create(PlayActivity.this, R.raw.gamemenu);
+        mp.start();
         Toast.makeText(this, getString(R.string.you_lost), Toast.LENGTH_LONG).show();
     }
 

@@ -9,8 +9,11 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Button;
 
 import com.stucom.franmorenoalc.R;
+
+import java.util.Locale;
 
 public class WormyView extends View {
 
@@ -21,6 +24,7 @@ public class WormyView extends View {
        private boolean playing = false;
        private char map[];
        private Paint paint;
+       private Paint paintScore;
        private Bitmap tiles, wormLeft, wormRight, worm;
 
        public WormyView(Context context) { this(context, null, 0); }
@@ -94,6 +98,7 @@ public class WormyView extends View {
                        placed++;
                    }
                }
+
                // Random coins
                placed = 0;
                numCoins = size / 50;
@@ -169,6 +174,22 @@ public class WormyView extends View {
            }
            drawWorm(canvas, left + wormX * TILE_SIZE, top + wormY * TILE_SIZE);
            canvas.drawRect(left, top, right, bottom, paint);
+
+           // TODO donde poner todo esto???
+           paintScore = new Paint();
+           //super.onDraw(canvas);
+           int w = getWidth();
+           int h = getHeight();
+           int gapX = (w > h) ? (w-h)/2 : 0;
+           int gapY = (h > w) ? (h-w)/2 : 0;
+           int size = Math.min(w,h);
+           canvas.translate(gapX, gapY);
+           canvas.scale(size / 100.0f, size / 100.0f);
+           //paint.setColor(Color.argb(1, 253, 255, 255));
+           //canvas.drawText("888888", 17, 6, paint);
+           paintScore.setColor(Color.WHITE);
+           String s = String.format(Locale.getDefault(), "%04d", score);
+           canvas.drawText(s, 50, 5, paintScore);
        }
 
        private int counter = 0;
