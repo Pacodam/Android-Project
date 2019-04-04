@@ -52,6 +52,7 @@ implements WormyView.WormyListener, SensorEventListener {
     private boolean loaded;
     private int coinEat, laugh2;
     private MediaPlayer mp;
+    private Button btnNewGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ implements WormyView.WormyListener, SensorEventListener {
         prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         token = prefs.getString("token", null);
         wormyView = findViewById(R.id.wormyView);
-        Button btnNewGame = findViewById(R.id.btnNewGame);
+        btnNewGame = wormyView.getStartButton();
         tvScore = findViewById(R.id.tvScore);
         btnNewGame.setOnClickListener(new View.OnClickListener() {
             @Override

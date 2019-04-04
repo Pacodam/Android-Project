@@ -6,41 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".PlayActivity">
 
-    <Button
-        android:id="@+id/btnNewGame"
+    <com.stucom.franmorenoalc.views.WormyView
+        android:id="@+id/wormyView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/new_game"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.53" />
 
     <TextView
         android:id="@+id/tvScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.stucom.franmorenoalc.views.WormyView
-        android:id="@+id/wormyView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="682dp"
+        android:textColor="@android:color/black"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnNewGame" />
+        app:layout_constraintStart_toEndOf="@+id/wormyView"
+        app:layout_constraintTop_toTopOf="parent" />
 
-   <!-- <TextView
+    <Button
+        android:id="@+id/btnNewGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="200dp"
+        android:layout_marginBottom="300dp"
+        android:text="@string/new_game"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.855"
+        app:layout_constraintStart_toEndOf="@+id/wormyView"
+        app:layout_constraintTop_toBottomOf="@+id/wormyView"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <!-- <TextView
         android:id="@+id/hintPlay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

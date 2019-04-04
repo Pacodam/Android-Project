@@ -26,6 +26,7 @@ public class WormyView extends View {
        private Paint paint;
        private Paint paintScore;
        private Bitmap tiles, wormLeft, wormRight, worm;
+       private Button button;
 
        public WormyView(Context context) { this(context, null, 0); }
        public WormyView(Context context, AttributeSet attrs) { this(context, attrs, 0); }
@@ -39,6 +40,7 @@ public class WormyView extends View {
            wormLeft = BitmapFactory.decodeResource(getResources(), R.drawable.worm_left);
            wormRight = BitmapFactory.decodeResource(getResources(), R.drawable.worm_right);
            worm = wormLeft;
+           button = findViewById(R.id.btnNewGame);
        }
 
        @Override public void onMeasure(int specW, int specH) {
@@ -98,7 +100,6 @@ public class WormyView extends View {
                        placed++;
                    }
                }
-
                // Random coins
                placed = 0;
                numCoins = size / 50;
@@ -237,5 +238,9 @@ public class WormyView extends View {
        private WormyListener listener;
        public void setWormyListener(WormyListener listener) {
            this.listener = listener;
+       }
+
+       public Button getStartButton(){
+           return button;
        }
 }
