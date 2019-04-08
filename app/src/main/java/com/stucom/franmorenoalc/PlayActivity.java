@@ -63,7 +63,7 @@ implements WormyView.WormyListener, SensorEventListener {
         prefs = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         token = prefs.getString("token", null);
         wormyView = findViewById(R.id.wormyView);
-        btnNewGame = wormyView.getStartButton();
+        btnNewGame = findViewById(R.id.btnNewGame);
         tvScore = findViewById(R.id.tvScore);
         btnNewGame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,9 +177,18 @@ implements WormyView.WormyListener, SensorEventListener {
         mp = MediaPlayer.create(PlayActivity.this, R.raw.gamemenu);
         mp.start();
         Toast.makeText(this, getString(R.string.you_lost), Toast.LENGTH_LONG).show();
+
+        //guardem el resultat del joc a la api
+        if(token != null) {
+            saveScore(token, score, 0);
+        }
     }
 
-}
+    public Button getBtnNewGame(){
+        return btnNewGame;
+    }
+
+
         /*//userScoreView = findViewById(R.id.userScoreView);
         findViewById(R.id.btnRandom).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,7 +212,7 @@ implements WormyView.WormyListener, SensorEventListener {
 
     /**
      * Al clicar en enviar la puntuacion obtenida se guarda
-     *//*
+     */
     public  void saveScore(final String token, final int score, final int level) {
 
 
@@ -246,4 +255,3 @@ implements WormyView.WormyListener, SensorEventListener {
 
 
 }
-*/
