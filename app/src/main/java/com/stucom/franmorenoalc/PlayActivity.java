@@ -53,6 +53,7 @@ implements WormyView.WormyListener, SensorEventListener {
     private int coinEat, laugh2;
     private MediaPlayer mp;
     private Button btnNewGame;
+    private int totalLives;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +103,8 @@ implements WormyView.WormyListener, SensorEventListener {
         mp.release();
         mp = MediaPlayer.create(PlayActivity.this, R.raw.gamemenu);
         mp.start();
+
+        totalLives = 3;
     }
 
 
@@ -169,20 +172,29 @@ implements WormyView.WormyListener, SensorEventListener {
 
     @Override
     public void gameLost(View view) {
-        if (loaded) {
-            soundPool.play(laugh2, 1f, 1f, 1, 0, 1f);
-        }
-        //incorporació de música
-        mp.release();
-        mp = MediaPlayer.create(PlayActivity.this, R.raw.gamemenu);
-        mp.start();
-        Toast.makeText(this, getString(R.string.you_lost), Toast.LENGTH_LONG).show();
+        switch(wormyView.getTotalLives()) {
+            case 1:
+                wormyView.updateLives();
+                totalLives--;
+                if (loaded) {
+                    soundPool.play(laugh2, 1f, 1f, 1, 0, 1f);
+                }
+                //incorporació de música
+                mp.release();
+                mp = MediaPlayer.create(PlayActivity.this, R.raw.gamemenu);
+                mp.start();
+                Toast.makeText(this, getString(R.string.you_lost), Toast.LENGTH_LONG).show();
 
-        //guardem el resultat del joc a la api
-        if(token != null) {
-            saveScore(token, score, 0);
+                //guardem el resultat del joc a la api
+                if (token != null) {
+                    saveScore(token, score, 0);
+                }
+                break;
+            default:
+                wormyView.updateLives();
+            }
         }
-    }
+
 
     public Button getBtnNewGame(){
         return btnNewGame;
