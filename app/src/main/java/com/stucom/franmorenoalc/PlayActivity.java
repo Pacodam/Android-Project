@@ -173,7 +173,7 @@ implements WormyView.WormyListener, SensorEventListener {
     @Override
     public void gameLost(View view) {
         switch(wormyView.getTotalLives()) {
-            case 1:
+            case 1:  //si nomes queda una vida quan es mor el joc s'acaba
                 wormyView.updateLives();
                 totalLives--;
                 if (loaded) {
@@ -191,7 +191,7 @@ implements WormyView.WormyListener, SensorEventListener {
                 }
                 break;
             default:
-                wormyView.updateLives();
+                wormyView.updateLives();  //en la resta de casos, el joc continua, pero es baixa una vida
             }
         }
 

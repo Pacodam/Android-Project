@@ -26,6 +26,8 @@ public class WormyView extends View {
        private Paint paint;
        private Paint paintScore;
        private Bitmap tiles, wormLeft, wormRight, worm;
+       private Bitmap w1, w2, w3;
+       private int totalLives;
 
 
        public WormyView(Context context) { this(context, null, 0); }
@@ -40,6 +42,10 @@ public class WormyView extends View {
            wormLeft = BitmapFactory.decodeResource(getResources(), R.drawable.worm_left);
            wormRight = BitmapFactory.decodeResource(getResources(), R.drawable.worm_right);
            worm = wormLeft;
+           w1 = wormLeft;
+           w2 = wormLeft;
+           w3 = wormLeft;
+           totalLives = 3;
        }
 
        @Override public void onMeasure(int specW, int specH) {
@@ -64,6 +70,7 @@ public class WormyView extends View {
        public void newGame() {
            slowdown = SLOW_DOWN;
            score = 0;
+           totalLives = 3;
            playing = true;
            resetMap(true);
        }
@@ -173,9 +180,21 @@ public class WormyView extends View {
                y += TILE_SIZE;
            }
            drawWorm(canvas, left + wormX * TILE_SIZE, top + wormY * TILE_SIZE);
+           if(totalLives == 3) {
+               drawWorm(canvas, 60, 5);
+               drawWorm(canvas, 30, 5);
+               drawWorm(canvas, 3, 5);
+           }
+           if(totalLives == 2) {
+               drawWorm(canvas, 30, 5);
+               drawWorm(canvas, 3, 5);
+           }
+           if(totalLives == 1){
+               drawWorm(canvas, 3, 5);
+           }
+
            canvas.drawRect(left, top, right, bottom, paint);
 
-           // TODO donde poner todo esto???
            paintScore = new Paint();
            //super.onDraw(canvas);
            int w = getWidth();
@@ -184,12 +203,12 @@ public class WormyView extends View {
            int gapY = (h > w) ? (h-w)/2 : 0;
            int size = Math.min(w,h);
            canvas.translate(gapX, gapY);
-           canvas.scale(size / 100.0f, size / 100.0f);
+           canvas.scale(size / 80.0f, size / 70.0f);
            //paint.setColor(Color.argb(1, 253, 255, 255));
            //canvas.drawText("888888", 17, 6, paint);
            paintScore.setColor(Color.WHITE);
            String s = String.format(Locale.getDefault(), "%04d", score);
-           canvas.drawText(s, 50, 5, paintScore);
+           canvas.drawText(s, 50, -10, paintScore);
        }
 
        private int counter = 0;
@@ -220,13 +239,16 @@ public class WormyView extends View {
                    }
                    else if ((map[idx] >= 'P') && (map[idx] <= 'S')) {
                        // Plant touched!
-                       playing = false;
+                      if(totalLives == 1)  playing = false;
+                       //playing = false;
                        if (listener != null) listener.gameLost(this);
                    }
                }
            }
            this.invalidate();
        }
+
+
 
        public interface WormyListener {
            void scoreUpdated(View view, int score);
@@ -237,6 +259,14 @@ public class WormyView extends View {
        private WormyListener listener;
        public void setWormyListener(WormyListener listener) {
            this.listener = listener;
+       }
+
+       public int getTotalLives(){
+           return totalLives;
+       }
+
+       public void updateLives(){
+           totalLives--;
        }
 
 
