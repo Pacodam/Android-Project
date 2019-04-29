@@ -1,5 +1,6 @@
 package com.stucom.franmorenoalc.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,15 +9,19 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
+import com.stucom.franmorenoalc.PlayActivity;
 import com.stucom.franmorenoalc.R;
 
 import java.util.Locale;
 
 public class WormyView extends View {
 
+       private PlayActivity playAct = new PlayActivity();
        public static final int SLOW_DOWN = 5;
        public static int TILE_SIZE = 48;
        private int nCols, nRows, top, left, bottom, right;
@@ -28,6 +33,8 @@ public class WormyView extends View {
        private Bitmap tiles, wormLeft, wormRight, worm;
        private Bitmap w1, w2, w3;
        private int totalLives;
+       private Paint paintButton;
+
 
 
        public WormyView(Context context) { this(context, null, 0); }
@@ -39,7 +46,7 @@ public class WormyView extends View {
            paint.setColor(Color.BLACK);
            paint.setStrokeWidth(3.0f);
            tiles = BitmapFactory.decodeResource(getResources(), R.drawable.tiles);
-           wormLeft = BitmapFactory.decodeResource(getResources(), R.drawable.worm_left);
+           wormLeft = BitmapFactory.decodeResource(getResources(), R.drawable.worm_left); //copiar
            wormRight = BitmapFactory.decodeResource(getResources(), R.drawable.worm_right);
            worm = wormLeft;
            w1 = wormLeft;
@@ -47,6 +54,24 @@ public class WormyView extends View {
            w3 = wormLeft;
            totalLives = 3;
        }
+
+       /*
+       //proves per intentar fer un miserable butó
+    @SuppressLint("ClickableViewAccessibility")
+    @Override public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+        switch(action) {
+            case MotionEvent.ACTION_DOWN:
+                playAct.startGame();
+                playing = true;
+                this.invalidate();
+                break;
+            default:
+                //Log.d("flx", "X=" + x + " Y=" + y + " ACTION=" + action);
+        }
+        return true;
+    }
+    */
 
        @Override public void onMeasure(int specW, int specH) {
            int w = MeasureSpec.getSize(specW);
@@ -152,6 +177,11 @@ public class WormyView extends View {
            canvas.drawBitmap(worm, src, dst, paint);
        }
 
+       /*
+       public void drawButton(Canvas canvas, int x, int y){
+
+       } */
+
        @Override public void onDraw(Canvas canvas) {
            canvas.drawColor(Color.WHITE);
            if (map == null) return;
@@ -209,6 +239,33 @@ public class WormyView extends View {
            paintScore.setColor(Color.WHITE);
            String s = String.format(Locale.getDefault(), "%04d", score);
            canvas.drawText(s, 50, -10, paintScore);
+
+           ////super.onDraw(canvas);
+           //           int w = TILE_SIZE*nCols;
+           //           int h = TILE_SIZE*nRows;
+           //           canvas.translate(left, top);
+           //           canvas.scale(w / 100.0f, h / 70.0f);
+
+           /*
+           if(!playing){
+               paintButton = new Paint();
+               //super.onDraw(canvas);
+               int w1 = getWidth();
+               int h1 = getHeight();
+               int gapX1 = (w1 > h1) ? (w1-h1)/2 : 0;
+               int gapY1 = (h1 > w1) ? (h1-w1)/2 : 0;
+               int size1 = Math.min(w1,h1);
+               canvas.translate(gapX1, gapY1);
+               canvas.scale(size / 80.0f, size / 70.0f);
+               //paint.setColor(Color.argb(1, 253, 255, 255));
+               //canvas.drawText("888888", 17, 6, paint);
+               paintButton.setColor(Color.WHITE);
+               String s1 = String.format(Locale.getDefault(), "%04d", score);
+               canvas.drawText(s, 0, , paintButton);
+           }
+           */
+
+
        }
 
        private int counter = 0;
@@ -267,6 +324,10 @@ public class WormyView extends View {
 
        public void updateLives(){
            totalLives--;
+       }
+
+       public void setPlaying(){
+           if(playing) playing = false;
        }
 
 

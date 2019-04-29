@@ -75,6 +75,7 @@ implements WormyView.WormyListener, SensorEventListener {
                 mp.release();
                 mp = MediaPlayer.create(PlayActivity.this, R.raw.netherplace);
                 mp.start();
+                btnNewGame.setVisibility(View.INVISIBLE);
 
             }
         });
@@ -189,6 +190,7 @@ implements WormyView.WormyListener, SensorEventListener {
                 if (token != null) {
                     saveScore(token, score, 0);
                 }
+                btnNewGame.setVisibility(View.VISIBLE);
                 break;
             default:
                 wormyView.updateLives();  //en la resta de casos, el joc continua, pero es baixa una vida
