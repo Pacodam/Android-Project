@@ -9,6 +9,8 @@ import com.stucom.franmorenoalc.bonk.engine.Scene;
 // This game is a Game instance
 public class BonkGame extends Game {
 
+
+
     // Constructor
     BonkGame(GameEngine gameEngine) {
         super(gameEngine);
@@ -21,9 +23,9 @@ public class BonkGame extends Game {
         Scene01 scene = new Scene01(this);
         this.loadScene(scene);
         // Background music
-        //getAudio().loadMusic(R.raw.music);
-         getAudio().loadMusic(R.raw.papaya);
+        this.loadMusic(R.raw.papaya);
     }
+
 
     // Method to be called when the game is being closed
     @Override
@@ -44,5 +46,7 @@ public class BonkGame extends Game {
         super.pause();
         getAudio().stopMusic();
     }
+
+
 
 }

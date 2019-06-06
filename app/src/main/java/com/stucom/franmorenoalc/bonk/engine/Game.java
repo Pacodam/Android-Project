@@ -2,6 +2,7 @@ package com.stucom.franmorenoalc.bonk.engine;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.support.annotation.RawRes;
 
 // This class is the base for a generic game
 @SuppressWarnings({"unused", "SameParameterValue"})
@@ -35,7 +36,11 @@ public class Game {
     public void pause() { paused = true; }
 
     // Sets the current scene
-    protected void loadScene(Scene scene) { this.scene = scene; }
+    public void loadScene(Scene scene) { this.scene = scene; }
+    public void loadMusic(@RawRes int sound){
+        getAudio().stopMusic();
+        getAudio().loadMusic(sound);
+    }
 
     // Process input from user
     void processInput() {
