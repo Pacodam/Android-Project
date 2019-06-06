@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".PlayActivity" />
+        <activity android:name=".bonk.game.GameActivity" />
         <activity android:name=".RankActivity" />
         <activity android:name=".QuantActivity" />
         <activity android:name=".AdjustmentsActivity" />

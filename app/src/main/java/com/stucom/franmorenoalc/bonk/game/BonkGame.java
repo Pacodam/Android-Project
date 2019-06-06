@@ -21,7 +21,8 @@ public class BonkGame extends Game {
         Scene01 scene = new Scene01(this);
         this.loadScene(scene);
         // Background music
-        getAudio().loadMusic(R.raw.music);
+        //getAudio().loadMusic(R.raw.music);
+         getAudio().loadMusic(R.raw.papaya);
     }
 
     // Method to be called when the game is being closed
