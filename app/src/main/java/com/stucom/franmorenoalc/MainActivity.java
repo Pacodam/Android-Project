@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.stucom.franmorenoalc.bonk.game.GameActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     /* Esta Activity muestra el menu principal, con cuatro botones que conducen respectivamente
@@ -67,6 +69,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, PlayActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button btnPlay2 = findViewById(R.id.btnPlay2);
+        btnPlay2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, GameActivity.class);
                 startActivity(intent);
             }
         });

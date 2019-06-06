@@ -5,7 +5,8 @@
 
     <string name="adjustments">User settings</string>
     <string name="btnRegistro">Registration</string>
-    <string name="btnPlay">Play</string>
+    <string name="btnPlay">Wormy</string>
+    <string name="btnPlay2">Bonk</string>
     <string name="btnRank">Ranking</string>
     <string name="btnAdjustments">Adjustments</string>
     <string name="btnQuant">Who we are</string>

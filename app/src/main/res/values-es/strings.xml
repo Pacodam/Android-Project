@@ -17,7 +17,8 @@
     <string name="buttonDelete">Elimina foto</string>
     <string name="buttonUpload">Galeria</string>
     <string name="dialogTitle">Opciones de foto</string>
-    <string name="btnPlay">Jugar</string>
+    <string name="btnPlay">Wormy</string>
+    <string name="btnPlay2">Bonk</string>
     <string name="random">"Aleatorio"</string>
     <string name="send">"ENVIAR"</string>
     <string name="adjustments">Ajustes de usuario</string>

@@ -31,6 +31,9 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.SENSOR_SERVICE;
+
 
 public class PlayActivity extends AppCompatActivity
 implements WormyView.WormyListener, SensorEventListener {
