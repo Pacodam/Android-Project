@@ -1,7 +1,10 @@
 package com.stucom.franmorenoalc.bonk.engine;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -12,6 +15,9 @@ import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+
+import com.stucom.franmorenoalc.MainActivity;
+import com.stucom.franmorenoalc.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +39,17 @@ public class GameEngine extends View implements Runnable, SensorEventListener {
     private int count = 0;      // Divider
     // DEBUG MODE
     private boolean debugMode = false;  // Sets the debug mode
+    private AlertDialog.Builder dialogBuilder;
+    private static Context contex;
 
     // Constructor
     public GameEngine(Context context) {
         super(context);
+        contex = context;
         handler = new Handler();
         audio = new Audio(context);
         this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        dialogBuilder = new AlertDialog.Builder(context);
     }
 
     // Game getter & setter
@@ -191,4 +201,22 @@ public class GameEngine extends View implements Runnable, SensorEventListener {
         this.accelerationZ = sensorEvent.values[2];
     }
     @Override public void onAccuracyChanged(Sensor sensor, int i) { }
+
+    public void gameOverDialog() {
+        dialogBuilder.setTitle("GAME OVER")
+                .setMessage("You can do better")
+                .setCancelable(false)
+                .setPositiveButton("Menu", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(contex, MainActivity.class);
+                        contex.startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Play Again", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        start();
+                    }
+                }).show();
+    }
 }

@@ -36,12 +36,15 @@ public class Bonk extends GameObject {
     public final static int STATE_FALLING_LEFT = 6;
     public final static int STATE_FALLING_RIGHT = 7;
     public final static int STATE_JUMPING_FRONT = 8;
+    public final static int STATE_TOUCHED = 9;
+
+
 
     // State change matrix depending on movement direction
     private static final int[] NEW_STATES = {
         STATE_JUMPING_LEFT, STATE_JUMPING_FRONT, STATE_JUMPING_RIGHT,
         STATE_WALKING_LEFT, STATE_STANDING_FRONT, STATE_WALKING_RIGHT,
-        STATE_FALLING_LEFT, STATE_JUMPING_FRONT, STATE_FALLING_RIGHT
+        STATE_FALLING_LEFT, STATE_JUMPING_FRONT, STATE_FALLING_RIGHT, STATE_TOUCHED
     };
 
     // Constructor
@@ -53,6 +56,7 @@ public class Bonk extends GameObject {
         for (int i = 0; i < 9; i++) {
             this.addSpriteSequence(i, i); // The first 0-8 states are indexed animations 0-8
         }
+        this.addSpriteSequence(9,12);
     }
 
     //Lifes Remaining
@@ -87,6 +91,11 @@ public class Bonk extends GameObject {
     // And kill him is exactly change its state to 3
     public void die() {
         changeState(STATE_DEAD);
+    }
+
+    // touched by enemy, loss of life, state 9
+    public void touched(){
+        changeState(STATE_TOUCHED);
     }
 
     // User input helper methods

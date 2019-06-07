@@ -37,9 +37,14 @@ public class Game {
 
     // Sets the current scene
     public void loadScene(Scene scene) { this.scene = scene; }
-    public void loadMusic(@RawRes int sound){
-        getAudio().stopMusic();
+    public void loadMusic(int sound){
+        //getAudio().stopMusic();
         getAudio().loadMusic(sound);
+        getAudio().startMusic();
+    }
+
+    public void stopMusic(){
+        getAudio().stopMusic();
     }
 
     // Process input from user
