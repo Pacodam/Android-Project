@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.util.SparseIntArray;
 import android.widget.Toast;
 
+import com.stucom.franmorenoalc.bonk.game.characters.Door;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -109,6 +111,7 @@ abstract public class TiledScene extends Scene {
                     // Delegate to the parser (possibly overridden)
                     GameObject gameObject = this.parseLine(cmd, args);
                     if (gameObject != null) this.add(gameObject);
+
                 }
             }
             reader.close();
@@ -116,12 +119,20 @@ abstract public class TiledScene extends Scene {
             scene = lines.toArray(new String[0]);
             sceneHeight = scene.length;
             sceneWidth = scene[0].length();
+
         }
         catch (IOException e) {
             String message = "Error loading scene:" +  e.getMessage();
             Toast.makeText(gameEngine.getContext(), message, Toast.LENGTH_LONG).show();
         }
     }
+    /*
+    //trying to show the door only when left coins = 0
+    protected GameObject showDoor(Door door){
+        GameObject gameObject = door;
+        this.add(door);
+        return null;
+    } */
 
     // Parses a line from a TXT scene definition file
     protected GameObject parseLine(String cmd, String args) {
@@ -160,6 +171,8 @@ abstract public class TiledScene extends Scene {
         }
         return null;
     }
+
+
 
     // Add the camera follow to the base physics cycle
     @Override

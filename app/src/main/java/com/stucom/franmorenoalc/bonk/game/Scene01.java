@@ -36,13 +36,13 @@ class Scene01 extends TiledScene implements OnContactListener {
     // We keep a specific reference to the player
     private Bonk bonk;
     // Used for specific painting
-    private Paint paintKeySymbol, paintKeyBackground, paintScore,
-            //pausePng = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.pause);
+    private Paint paintKeySymbol, paintKeyBackground, paintScore, paintPause, paintCircle;
 
-            //pausePng = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.worm_left);
-            paintPause = new Paint();
-    //private Bitmap pausePng;
-    public Bitmap pausePng;
+
+    //door coordinates
+    private Door door;
+    private int doorX;
+    private int doorY;
 
 
     // Constructor
@@ -65,7 +65,7 @@ class Scene01 extends TiledScene implements OnContactListener {
         // Load the scene tiles from resource
         this.loadFromFile(R.raw.mini);
         // Add contact listeners by tag names
-        this.addContactListener("bonk", "enemy", this);
+        //this.addContactListener("bonk", "enemy", this);
         this.addContactListener("bonk", "coin", this);
         this.addContactListener("bonk","door",this);
         this.addContactListener("bonk","speed",this);
@@ -79,7 +79,12 @@ class Scene01 extends TiledScene implements OnContactListener {
         Typeface typeface = ResourcesCompat.getFont(this.getContext(), R.font.dseg);
         paintScore.setTypeface(typeface);
         paintScore.setColor(Color.WHITE);
-        pausePng =  BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.worm_left);
+        paintPause = new Paint();
+        paintPause.setColor(Color.WHITE);
+        paintPause.setTextSize(30);
+        paintCircle = new Paint();
+        paintCircle.setColor(Color.argb(40, 0, 0, 0));
+        bonk.setCoins(2);
     }
 
     // Overrides the base parser adding specific syntax for coins and crabs
@@ -105,8 +110,10 @@ class Scene01 extends TiledScene implements OnContactListener {
         if(cmd.equals("DOOR")) {
             String[] parts2 = args.split(",");
             if (parts2.length != 2) return null;
-            int doorX = Integer.parseInt(parts2[0].trim()) * 16;
-            int doorY = Integer.parseInt(parts2[1].trim()) * 16;
+            this.doorX = Integer.parseInt(parts2[0].trim()) * 16;
+            this.doorY = Integer.parseInt(parts2[1].trim()) * 16;
+            Door door = new Door(game, doorX, doorY);
+            door.removeFromScene();
             return new Door(game, doorX, doorY);
         }
         if(cmd.equals("MUSHROOM")) {
@@ -180,6 +187,11 @@ class Scene01 extends TiledScene implements OnContactListener {
             this.getGame().getAudio().playSoundFX(0);
             object2.removeFromScene();
             bonk.addScore(10);
+            bonk.quitCoin();
+            if(bonk.getLeftCoins() == 0){
+
+
+            }
         }
         // Contact between Bonk and an enemy
         else if (tag2.equals("enemy")) {
@@ -213,9 +225,19 @@ class Scene01 extends TiledScene implements OnContactListener {
         }
         //contact between Bonk and mushroom == speed up and jump up
         else if (tag2.equals("speed")) {
+            object2.removeFromScene();
             bonk.superBonk();
         }
     }
+
+    /*
+    @Override
+    public GameObject showDoor(Door door){
+       return door;
+    } */
+
+
+
 
     // Overrides the basic draw by adding the translucent keyboard and the score
     @Override
@@ -241,6 +263,8 @@ class Scene01 extends TiledScene implements OnContactListener {
         canvas.drawText(score, getScaledWidth() - 50, 10, paintScore);
         canvas.drawText("lives: " + bonk.getLives(), getScaledWidth() - 50 , 20, paintScore);
 
+        //remaining coins to get
+        canvas.drawText("COINS LEFT: " + bonk.getLeftCoins(), 80,10, paintScore);
         /*
         //remaining lives down score
         //canvas.scale(getScale(), getScale());
@@ -249,13 +273,12 @@ class Scene01 extends TiledScene implements OnContactListener {
         canvas.drawText(lives, getScaledWidth() - 10, 8, paintLives); */
 
         if(game.isPaused()){
-            canvas.drawCircle(canvas.getWidth()/2,canvas.getHeight()/2, 100, paintScore);
-            //canvas.drawCircle(getWidth()/2, getHeight()/2, 100, paintScore);
-            canvas.drawText("||", 80,100, paintScore);
-            //Rect source = new Rect(0, 0, pausePng.getWidth(), pausePng.getHeight());
-            //canvas.drawBitmap(pausePng, source, source, null);
-            //canvas.drawBitmap(pausePng, 0, 0, paintPause);
-
+            int xx = getScaledWidth() / 2;
+            int yy = (int) ((getScaledHeight() / 2) - ((paintScore.descent() + paintScore.ascent()) / 2));
+            Log.d("flx", "xx " + xx + " yy " + yy);
+            canvas.drawCircle(xx, yy, 50, paintCircle);
+            canvas.drawText("| |", xx,yy, paintPause);
+            //((textPaint.descent() + textPaint.ascent()) / 2) is the distance from the baseline to the center.
         }
 
     }

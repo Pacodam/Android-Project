@@ -12,6 +12,7 @@ public class Door extends GameObject {
         this.addSpriteSequence(0, 11);
         SpriteSequence spriteSequence = getCurrentSpriteSequence();
         spriteSequence.randomizeSprite();
+
     }
 
     // The collision rect around the coin

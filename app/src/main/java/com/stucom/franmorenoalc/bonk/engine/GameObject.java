@@ -47,6 +47,7 @@ public class GameObject {
     // Marked for deletion
     boolean isMarkedForDeletion() { return markedForDeletion; }
     public void removeFromScene() { this.markedForDeletion = true; }
+    public void addToScene() { this.markedForDeletion = false; }
 
     // Tags
     public boolean hasTag(String tag) { return tags.contains(tag); }
