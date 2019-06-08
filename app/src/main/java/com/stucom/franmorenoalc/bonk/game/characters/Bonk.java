@@ -20,23 +20,24 @@ public class Bonk extends GameObject {
     private int lives;
 
     // Useful constants
-    private static final int MAX_VELOCITY = 4;
-    private static final int JUMP_VELOCITY = -11;
+    private static  int MAX_VELOCITY = 4;
+    private static  int JUMP_VELOCITY = -11;
     private static final int PAD_LEFT = 2;
     private static final int PAD_TOP = 0;
     private static final int COL_WIDTH = 20;
     private static final int COL_HEIGHT = 32;
 
-    public final static int STATE_STANDING_FRONT = 0;
-    public final static int STATE_WALKING_LEFT = 1;
-    public final static int STATE_WALKING_RIGHT = 2;
-    public final static int STATE_DEAD = 3;
-    public final static int STATE_JUMPING_LEFT = 4;
-    public final static int STATE_JUMPING_RIGHT = 5;
-    public final static int STATE_FALLING_LEFT = 6;
-    public final static int STATE_FALLING_RIGHT = 7;
-    public final static int STATE_JUMPING_FRONT = 8;
-    public final static int STATE_TOUCHED = 9;
+    private final static int STATE_STANDING_FRONT = 0;
+    private final static int STATE_WALKING_LEFT = 1;
+    private final static int STATE_WALKING_RIGHT = 2;
+    private final static int STATE_DEAD = 3;
+    private final static int STATE_JUMPING_LEFT = 4;
+    private final static int STATE_JUMPING_RIGHT = 5;
+    private final static int STATE_FALLING_LEFT = 6;
+    private final static int STATE_FALLING_RIGHT = 7;
+    private final static int STATE_JUMPING_FRONT = 8;
+    private final static int STATE_TOUCHED = 9;
+    private final static int STATE_SUPERBONK = 10;
 
 
 
@@ -44,7 +45,7 @@ public class Bonk extends GameObject {
     private static final int[] NEW_STATES = {
         STATE_JUMPING_LEFT, STATE_JUMPING_FRONT, STATE_JUMPING_RIGHT,
         STATE_WALKING_LEFT, STATE_STANDING_FRONT, STATE_WALKING_RIGHT,
-        STATE_FALLING_LEFT, STATE_JUMPING_FRONT, STATE_FALLING_RIGHT, STATE_TOUCHED
+        STATE_FALLING_LEFT, STATE_JUMPING_FRONT, STATE_FALLING_RIGHT, STATE_TOUCHED, STATE_SUPERBONK
     };
 
     // Constructor
@@ -214,5 +215,11 @@ public class Bonk extends GameObject {
                 x + PAD_LEFT + COL_WIDTH,
                 y + PAD_TOP + COL_HEIGHT
         );
+    }
+
+    public void superBonk(){
+        this.MAX_VELOCITY = 15;
+        this.JUMP_VELOCITY = -25;
+
     }
 }

@@ -29,6 +29,7 @@ public class GameEngine extends View implements Runnable, SensorEventListener {
     private Game game;
     private Audio audio;
     private BitmapSet bitmapSet;
+    private BitmapSet bitmapSet2;
     private SensorManager sensorManager;
     private float accelerationX, accelerationY, accelerationZ;    // Accelerometer data
     // GAME ENGINE RUNNABLE
@@ -62,6 +63,8 @@ public class GameEngine extends View implements Runnable, SensorEventListener {
     // BitmapSet related getter & setter
     public BitmapSet getBitmapSet() { return bitmapSet; }
     public void setBitmapSet(BitmapSet bitmapSet) { this.bitmapSet = bitmapSet; }
+    public BitmapSet getBitmapSet2() { return bitmapSet2; }
+    public void setBitmapSet2(BitmapSet bitmapSet) { this.bitmapSet2 = bitmapSet; }
 
     // Retrieve size of screen
     int getScreenWidth() { return this.getMeasuredWidth(); }
@@ -86,6 +89,11 @@ public class GameEngine extends View implements Runnable, SensorEventListener {
     public void loadBitmapSet(int resource, int resourceInfo, int resourceSeq) {
         BitmapSet bitmapSet = new BitmapSet(getContext(), resource, resourceInfo, resourceSeq );
         this.setBitmapSet(bitmapSet);
+    }
+    // Loads a BitmapSet from resources
+    public void loadBitmapSet2(int resource, int resourceInfo, int resourceSeq) {
+        BitmapSet bitmapSet = new BitmapSet(getContext(), resource, resourceInfo, resourceSeq );
+        this.setBitmapSet2(bitmapSet);
     }
 
     // This method will be called on first start

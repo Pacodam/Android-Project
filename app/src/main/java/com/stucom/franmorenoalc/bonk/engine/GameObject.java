@@ -61,6 +61,12 @@ public class GameObject {
         SpriteSequence sequence = game.getSpriteSequence(spriteSequenceIndex);
         this.animations.put(state, sequence);
     }
+    //second animation set
+    protected void addSpriteSequence2(int state, int spriteSequenceIndex) {
+        SpriteSequence sequence = game.getSpriteSequence2(spriteSequenceIndex);
+        this.animations.put(state, sequence);
+    }
+
     // Get current sprite sequence
     protected SpriteSequence getCurrentSpriteSequence() {
         return this.animations.get(state, null);

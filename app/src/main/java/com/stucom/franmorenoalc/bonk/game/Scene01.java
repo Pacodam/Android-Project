@@ -1,8 +1,5 @@
 package com.stucom.franmorenoalc.bonk.game;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,13 +8,12 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
+
 import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.stucom.franmorenoalc.MainActivity;
 import com.stucom.franmorenoalc.R;
 import com.stucom.franmorenoalc.bonk.engine.Game;
 import com.stucom.franmorenoalc.bonk.engine.GameEngine;
@@ -30,6 +26,7 @@ import com.stucom.franmorenoalc.bonk.game.characters.Bonk;
 import com.stucom.franmorenoalc.bonk.game.characters.Coin;
 import com.stucom.franmorenoalc.bonk.game.characters.Crab;
 import com.stucom.franmorenoalc.bonk.game.characters.Door;
+import com.stucom.franmorenoalc.bonk.game.characters.Speed;
 
 import java.util.Locale;
 
@@ -39,9 +36,13 @@ class Scene01 extends TiledScene implements OnContactListener {
     // We keep a specific reference to the player
     private Bonk bonk;
     // Used for specific painting
-    private Paint paintKeySymbol, paintKeyBackground, paintScore, paintPause;
+    private Paint paintKeySymbol, paintKeyBackground, paintScore,
+            //pausePng = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.pause);
+
+            //pausePng = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.worm_left);
+            paintPause = new Paint();
     //private Bitmap pausePng;
-    public Bitmap pausePng = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.worm_left);
+    public Bitmap pausePng;
 
 
     // Constructor
@@ -50,6 +51,7 @@ class Scene01 extends TiledScene implements OnContactListener {
         // Load the bitmap set for this game
         GameEngine gameEngine = game.getGameEngine();
         gameEngine.loadBitmapSet(R.raw.sprites, R.raw.sprites_info, R.raw.sprites_seq);
+        gameEngine.loadBitmapSet2(R.raw.doors, R.raw.door_info, R.raw.door_seq);
 
         // Create the main character (player)
         bonk = new Bonk(game, 0, 0);
@@ -66,6 +68,7 @@ class Scene01 extends TiledScene implements OnContactListener {
         this.addContactListener("bonk", "enemy", this);
         this.addContactListener("bonk", "coin", this);
         this.addContactListener("bonk","door",this);
+        this.addContactListener("bonk","speed",this);
         // Prepare the painters for drawing
         paintKeyBackground = new Paint();
         paintKeyBackground.setColor(Color.argb(20, 0, 0, 0));
@@ -76,9 +79,7 @@ class Scene01 extends TiledScene implements OnContactListener {
         Typeface typeface = ResourcesCompat.getFont(this.getContext(), R.font.dseg);
         paintScore.setTypeface(typeface);
         paintScore.setColor(Color.WHITE);
-        //pausePng = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.pause);
-        //pausePng = BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.worm_left);
-        paintPause = new Paint();
+        pausePng =  BitmapFactory.decodeResource(Resources.getSystem(), R.drawable.worm_left);
     }
 
     // Overrides the base parser adding specific syntax for coins and crabs
@@ -107,6 +108,13 @@ class Scene01 extends TiledScene implements OnContactListener {
             int doorX = Integer.parseInt(parts2[0].trim()) * 16;
             int doorY = Integer.parseInt(parts2[1].trim()) * 16;
             return new Door(game, doorX, doorY);
+        }
+        if(cmd.equals("MUSHROOM")) {
+            String[] parts2 = args.split(",");
+            if (parts2.length != 2) return null;
+            int doorX = Integer.parseInt(parts2[0].trim()) * 16;
+            int doorY = Integer.parseInt(parts2[1].trim()) * 16;
+            return new Speed(game, doorX, doorY);
         }
 
         // Test the common basic parser
@@ -160,8 +168,10 @@ class Scene01 extends TiledScene implements OnContactListener {
         }
     }
 
-    // Contact detection listener: A contact has been detected and must be processed
-    // The object1 (based on tag1) overlapped with object2 (based on tag2)
+    /*
+    Contact detection listener: A contact has been detected and must be processed
+    The object1 (based on tag1) overlapped with object2 (based on tag2)
+    */
     @Override
     public void onContact(String tag1, GameObject object1, String tag2, GameObject object2) {
         Log.d("flx", "Contact between a " + tag1 + " and " + tag2);
@@ -201,6 +211,10 @@ class Scene01 extends TiledScene implements OnContactListener {
             game.loadMusic(R.raw.papaya);
 
         }
+        //contact between Bonk and mushroom == speed up and jump up
+        else if (tag2.equals("speed")) {
+            bonk.superBonk();
+        }
     }
 
     // Overrides the basic draw by adding the translucent keyboard and the score
@@ -235,8 +249,11 @@ class Scene01 extends TiledScene implements OnContactListener {
         canvas.drawText(lives, getScaledWidth() - 10, 8, paintLives); */
 
         if(game.isPaused()){
-            Rect source = new Rect(0, 0, pausePng.getWidth(), pausePng.getHeight());
-            canvas.drawBitmap(pausePng, source, source, null);
+            canvas.drawCircle(canvas.getWidth()/2,canvas.getHeight()/2, 100, paintScore);
+            //canvas.drawCircle(getWidth()/2, getHeight()/2, 100, paintScore);
+            canvas.drawText("||", 80,100, paintScore);
+            //Rect source = new Rect(0, 0, pausePng.getWidth(), pausePng.getHeight());
+            //canvas.drawBitmap(pausePng, source, source, null);
             //canvas.drawBitmap(pausePng, 0, 0, paintPause);
 
         }

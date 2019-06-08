@@ -29,6 +29,11 @@ public class Game {
     public int getScreenHeight() { return gameEngine.getScreenHeight(); }
     public boolean isPaused() { return paused; }
 
+    //added for use second bitmap set (the doors)
+    public BitmapSet getBitmapSet2() { return gameEngine.getBitmapSet2(); }
+    public Bitmap getBitmap2(int index) { return getBitmapSet2().getBitmap(index); }
+    public SpriteSequence getSpriteSequence2(int index) { return getBitmapSet2().getSpriteSequence(index); }
+
     // Methods to be called by the game engine on start, stop, resume and pause
     public void start() { }
     public void stop() { }
