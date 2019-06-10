@@ -39,7 +39,7 @@ class Scene01 extends TiledScene implements OnContactListener {
     private Paint paintKeySymbol, paintKeyBackground, paintScore, paintPause, paintCircle;
 
 
-    //door coordinates
+    //door coordinates to make appear when coins are recollected
     private Door door;
     private int doorX;
     private int doorY;
@@ -50,12 +50,15 @@ class Scene01 extends TiledScene implements OnContactListener {
         super(game);
         // Load the bitmap set for this game
         GameEngine gameEngine = game.getGameEngine();
-        gameEngine.loadBitmapSet(R.raw.sprites, R.raw.sprites_info, R.raw.sprites_seq);
-        gameEngine.loadBitmapSet2(R.raw.doors, R.raw.door_info, R.raw.door_seq);
+        gameEngine.loadBitmapSet(R.raw.doors, R.raw.sprites_info, R.raw.sprites_seq);
 
         // Create the main character (player)
         bonk = new Bonk(game, 0, 0);
         this.add(bonk);
+        //door = new Door(game, 1072,384);
+        door = new Door(game,80,80);
+        this.add(door);
+        //door.removeFromScene();
         // Set the follow camera to the player
         this.setCamera(bonk);
         // The screen will hold 16 rows of tiles (16px height each)
@@ -112,9 +115,8 @@ class Scene01 extends TiledScene implements OnContactListener {
             if (parts2.length != 2) return null;
             this.doorX = Integer.parseInt(parts2[0].trim()) * 16;
             this.doorY = Integer.parseInt(parts2[1].trim()) * 16;
-            Door door = new Door(game, doorX, doorY);
-            door.removeFromScene();
-            return new Door(game, doorX, doorY);
+            //Door door = new Door(game, doorX, doorY);
+            //return new Door(game, doorX, doorY);
         }
         if(cmd.equals("MUSHROOM")) {
             String[] parts2 = args.split(",");
@@ -189,7 +191,8 @@ class Scene01 extends TiledScene implements OnContactListener {
             bonk.addScore(10);
             bonk.quitCoin();
             if(bonk.getLeftCoins() == 0){
-
+                //Door door = new Door(game, doorX, doorY);
+                //door.addToScene();
 
             }
         }

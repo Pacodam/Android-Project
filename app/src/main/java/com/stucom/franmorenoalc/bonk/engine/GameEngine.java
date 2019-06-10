@@ -63,6 +63,7 @@ public class GameEngine extends View implements Runnable, SensorEventListener {
     // BitmapSet related getter & setter
     public BitmapSet getBitmapSet() { return bitmapSet; }
     public void setBitmapSet(BitmapSet bitmapSet) { this.bitmapSet = bitmapSet; }
+
     public BitmapSet getBitmapSet2() { return bitmapSet2; }
     public void setBitmapSet2(BitmapSet bitmapSet) { this.bitmapSet2 = bitmapSet; }
 

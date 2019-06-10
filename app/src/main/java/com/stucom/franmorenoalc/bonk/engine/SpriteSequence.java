@@ -74,4 +74,11 @@ public class SpriteSequence {
         canvas.drawBitmap(bitmap, x, y, null);
         this.nextSprite();
     }
+
+    public void drawSprite2(Canvas canvas, float x, float y) {
+        int bitmapIndex = sprites.get(sprite);
+        Bitmap bitmap = bitmapSet.getBitmap(bitmapIndex);
+        canvas.drawBitmap(bitmap, x, y, null);
+        this.nextSprite();
+    }
 }
