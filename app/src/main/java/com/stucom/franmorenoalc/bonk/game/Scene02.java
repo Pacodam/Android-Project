@@ -67,7 +67,7 @@ class Scene02 extends TiledScene implements OnContactListener {
         // Pre-loading of sound effects
         game.getAudio().loadSoundFX(new int[]{ R.raw.coin, R.raw.die, R.raw.pause, R.raw.boycry } );
         // Load the scene tiles from resource
-        this.loadFromFile(R.raw.mini);
+        this.loadFromFile(R.raw.mini2);
         // Add contact listeners by tag names
         this.addContactListener("bonk", "enemy", this);
         this.addContactListener("bonk", "coin", this);

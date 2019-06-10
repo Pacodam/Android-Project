@@ -21,8 +21,8 @@ public class Bonk extends GameObject {
     private int coinsLeft;
 
     // Useful constants
-    private static  int MAX_VELOCITY = 4;
-    private static  int JUMP_VELOCITY = -11;
+    private static  int MAX_VELOCITY = 8;
+    private static  int JUMP_VELOCITY = -15;
     private static final int PAD_LEFT = 2;
     private static final int PAD_TOP = 0;
     private static final int COL_WIDTH = 20;

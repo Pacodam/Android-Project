@@ -1,12 +1,8 @@
 package com.stucom.franmorenoalc.bonk.game;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 
 import android.os.Handler;
@@ -21,7 +17,6 @@ import com.stucom.franmorenoalc.bonk.engine.GameObject;
 import com.stucom.franmorenoalc.bonk.engine.OnContactListener;
 import com.stucom.franmorenoalc.bonk.engine.TiledScene;
 import com.stucom.franmorenoalc.bonk.engine.Touch;
-import com.stucom.franmorenoalc.bonk.game.GameActivity;
 import com.stucom.franmorenoalc.bonk.game.characters.Bonk;
 import com.stucom.franmorenoalc.bonk.game.characters.Coin;
 import com.stucom.franmorenoalc.bonk.game.characters.Crab;
@@ -50,15 +45,13 @@ class Scene01 extends TiledScene implements OnContactListener {
         super(game);
         // Load the bitmap set for this game
         GameEngine gameEngine = game.getGameEngine();
-        gameEngine.loadBitmapSet(R.raw.doors, R.raw.sprites_info, R.raw.sprites_seq);
+        gameEngine.loadBitmapSet(R.raw.sprites, R.raw.sprites_info, R.raw.sprites_seq);
 
         // Create the main character (player)
         bonk = new Bonk(game, 0, 0);
         this.add(bonk);
-        //door = new Door(game, 1072,384);
-        door = new Door(game,80,80);
+        door = new Door(game,80,80 );
         this.add(door);
-        //door.removeFromScene();
         // Set the follow camera to the player
         this.setCamera(bonk);
         // The screen will hold 16 rows of tiles (16px height each)
@@ -68,7 +61,7 @@ class Scene01 extends TiledScene implements OnContactListener {
         // Load the scene tiles from resource
         this.loadFromFile(R.raw.mini);
         // Add contact listeners by tag names
-        //this.addContactListener("bonk", "enemy", this);
+        this.addContactListener("bonk", "enemy", this);
         this.addContactListener("bonk", "coin", this);
         this.addContactListener("bonk","door",this);
         this.addContactListener("bonk","speed",this);
@@ -192,7 +185,7 @@ class Scene01 extends TiledScene implements OnContactListener {
             bonk.quitCoin();
             if(bonk.getLeftCoins() == 0){
                 //Door door = new Door(game, doorX, doorY);
-                //door.addToScene();
+                door.isOpened();
 
             }
         }
@@ -201,6 +194,7 @@ class Scene01 extends TiledScene implements OnContactListener {
             if(bonk.getLives() > 0){
                 this.getGame().getAudio().playSoundFX(3);
                 bonk.touched();
+                object2.removeFromScene();
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override

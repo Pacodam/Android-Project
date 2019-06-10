@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Buttons for different options of the app
         Button btnPlay2 = findViewById(R.id.btnPlay2);
         btnPlay2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +82,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+       /* Button btnPlay2 = findViewById(R.id.btnPlay2);
+        btnPlay2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                startActivity(intent);
+            }
+        }); */
 
         Button btnRank = findViewById(R.id.btnRank);
         btnRank.setOnClickListener(new View.OnClickListener() {
