@@ -215,7 +215,7 @@ class Scene02 extends TiledScene implements OnContactListener {
                 this.getGame().getAudio().playSoundFX(1);
                 object2.removeFromScene();
                 bonk.die();
-                getGameEngine().gameOverDialog();
+                getGameEngine().gameOverDialog(bonk.getScore());
             }
         }
         //contact between Bonk and door == next level!

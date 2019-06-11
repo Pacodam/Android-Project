@@ -45,19 +45,19 @@ class Scene01 extends TiledScene implements OnContactListener {
         super(game);
         // Load the bitmap set for this game
         GameEngine gameEngine = game.getGameEngine();
-        gameEngine.loadBitmapSet(R.raw.sprites, R.raw.sprites_info, R.raw.sprites_seq);
+        gameEngine.loadBitmapSet(R.raw.doorcop, R.raw.sprites_info, R.raw.sprites_seq);
 
         // Create the main character (player)
         bonk = new Bonk(game, 0, 0);
         this.add(bonk);
-        door = new Door(game,80,80 );
+        door = new Door(game,1072,384 );
         this.add(door);
         // Set the follow camera to the player
         this.setCamera(bonk);
         // The screen will hold 16 rows of tiles (16px height each)
         this.setScaledHeight(16 * 16);
         // Pre-loading of sound effects
-        game.getAudio().loadSoundFX(new int[]{ R.raw.coin, R.raw.die, R.raw.pause, R.raw.boycry } );
+        game.getAudio().loadSoundFX(new int[]{ R.raw.coin, R.raw.die, R.raw.pause, R.raw.boycry, R.raw.door_open } );
         // Load the scene tiles from resource
         this.loadFromFile(R.raw.mini);
         // Add contact listeners by tag names
@@ -185,9 +185,10 @@ class Scene01 extends TiledScene implements OnContactListener {
             bonk.quitCoin();
             if(bonk.getLeftCoins() == 0){
                 //Door door = new Door(game, doorX, doorY);
+                this.getGame().getAudio().playSoundFX(4);
                 door.isOpened();
-
             }
+
         }
         // Contact between Bonk and an enemy
         else if (tag2.equals("enemy")) {
@@ -202,22 +203,26 @@ class Scene01 extends TiledScene implements OnContactListener {
                         bonk.quitLives();
                         bonk.reset(0,0);
                     }
-                }, 3000);
+                }, 2000);
             }
             else {
                 this.getGame().getAudio().playSoundFX(1);
                 object2.removeFromScene();
                 bonk.die();
-                getGameEngine().gameOverDialog();
+                getGameEngine().gameOverDialog(bonk.getScore());
             }
         }
         //contact between Bonk and door == next level!
         else if (tag2.equals("door")) {
             //this.getGame().getAudio().playSoundFX(1);
             //GameActivity gm = (GameActivity) getContext();
-            game.loadScene(new Scene02(game));
-            game.stopMusic();
-            game.loadMusic(R.raw.papaya);
+            if(door.getState() == 1) {
+                game.loadScene(new Scene02(game));
+                game.stopMusic();
+                game.loadMusic(R.raw.papaya);
+            }else{
+                getGameEngine().alertLeftCoins(bonk.getLeftCoins());
+            }
 
         }
         //contact between Bonk and mushroom == speed up and jump up
@@ -227,11 +232,6 @@ class Scene01 extends TiledScene implements OnContactListener {
         }
     }
 
-    /*
-    @Override
-    public GameObject showDoor(Door door){
-       return door;
-    } */
 
 
 
@@ -272,7 +272,7 @@ class Scene01 extends TiledScene implements OnContactListener {
         if(game.isPaused()){
             int xx = getScaledWidth() / 2;
             int yy = (int) ((getScaledHeight() / 2) - ((paintScore.descent() + paintScore.ascent()) / 2));
-            Log.d("flx", "xx " + xx + " yy " + yy);
+            //Log.d("flx", "xx " + xx + " yy " + yy);
             canvas.drawCircle(xx, yy, 50, paintCircle);
             canvas.drawText("| |", xx,yy, paintPause);
             //((textPaint.descent() + textPaint.ascent()) / 2) is the distance from the baseline to the center.

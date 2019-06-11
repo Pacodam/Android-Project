@@ -211,9 +211,9 @@ public class GameEngine extends View implements Runnable, SensorEventListener {
     }
     @Override public void onAccuracyChanged(Sensor sensor, int i) { }
 
-    public void gameOverDialog() {
+    public void gameOverDialog(int score) {
         dialogBuilder.setTitle("GAME OVER")
-                .setMessage("You can do better")
+                .setMessage("You made " + score + " points")
                 .setCancelable(false)
                 .setPositiveButton("Menu", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -225,6 +225,16 @@ public class GameEngine extends View implements Runnable, SensorEventListener {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         start();
+                    }
+                }).show();
+    }
+
+    public void alertLeftCoins(int coins) {
+        dialogBuilder.setTitle("DOOR BLOCKED")
+                .setMessage(coins + " coins left")
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
                     }
                 }).show();
     }

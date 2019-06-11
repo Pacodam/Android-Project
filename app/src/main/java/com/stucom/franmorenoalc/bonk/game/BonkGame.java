@@ -23,7 +23,7 @@ public class BonkGame extends Game {
         Scene01 scene = new Scene01(this);
         this.loadScene(scene);
         // Background music
-        this.loadMusic(R.raw.papaya2);
+        //this.loadMusic(R.raw.papaya2);
     }
 
 

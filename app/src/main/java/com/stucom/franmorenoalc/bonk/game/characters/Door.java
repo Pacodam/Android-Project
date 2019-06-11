@@ -26,6 +26,7 @@ public class Door extends GameObject {
     }
 
     public void isOpened(){ changeState(DOOR_OPENED);}
+    public int getState() { return state;}
 
     /*
     public Door(Game game, int x, int y){
