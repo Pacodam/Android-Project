@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.stucom.franmorenoalc.bonk.game.GameActivity;
+import com.stucom.franmorenoalc.bonk.game.GameOptionsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         btnPlay2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                Intent intent = new Intent(MainActivity.this, GameOptionsActivity.class);
                 startActivity(intent);
             }
         });

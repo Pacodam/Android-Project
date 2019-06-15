@@ -59,6 +59,8 @@
     <string name="app_name2">Wormy</string>
     <string name="new_game">New Game</string>
     <string name="you_lost">You lost!</string>
+    <string name="resume_game">Restaurar partida</string>
+    <string name="new_game2">Nueva partida</string>
 
 
 </resources>

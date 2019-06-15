@@ -45,6 +45,50 @@ class Scene01 extends TiledScene implements OnContactListener {
         super(game);
         // Load the bitmap set for this game
         GameEngine gameEngine = game.getGameEngine();
+        gameEngine.loadBitmapSet(R.raw.spr, R.raw.sprites_info, R.raw.sprites_seq);
+
+        // Create the main character (player)
+        bonk = new Bonk(game, 0, 0);
+        this.add(bonk);
+        door = new Door(game,1072,384 );
+        this.add(door);
+        // Set the follow camera to the player
+        this.setCamera(bonk);
+        // The screen will hold 16 rows of tiles (16px height each)
+        this.setScaledHeight(16 * 16);
+        // Pre-loading of sound effects
+        game.getAudio().loadSoundFX(new int[]{ R.raw.coin, R.raw.die, R.raw.pause, R.raw.boycry, R.raw.door_open } );
+        // Load the scene tiles from resource
+        this.loadFromFile(R.raw.mini);
+        // Add contact listeners by tag names
+        //this.addContactListener("bonk", "enemy", this);
+        this.addContactListener("bonk", "coin", this);
+        this.addContactListener("bonk","door",this);
+        this.addContactListener("bonk","speed",this);
+        // Prepare the painters for drawing
+        paintKeyBackground = new Paint();
+        paintKeyBackground.setColor(Color.argb(20, 0, 0, 0));
+        paintKeySymbol = new Paint();
+        paintKeySymbol.setColor(Color.GRAY);
+        paintKeySymbol.setTextSize(10);
+        paintScore = new Paint(paintKeySymbol);
+        Typeface typeface = ResourcesCompat.getFont(this.getContext(), R.font.dseg);
+        paintScore.setTypeface(typeface);
+        paintScore.setColor(Color.WHITE);
+        paintCircle = new Paint();
+        paintCircle.setColor(Color.argb(40, 0, 0, 0));
+        paintPause = new Paint(paintCircle);
+        paintPause.setColor(Color.WHITE);
+        paintPause.setTextSize(30);
+
+        bonk.setCoins(2);
+    }
+
+    //constructor for teleporter events
+    Scene01(Game game, int xx, int yy) {
+        super(game);
+        // Load the bitmap set for this game
+        GameEngine gameEngine = game.getGameEngine();
         gameEngine.loadBitmapSet(R.raw.doorcop, R.raw.sprites_info, R.raw.sprites_seq);
 
         // Create the main character (player)
@@ -75,11 +119,12 @@ class Scene01 extends TiledScene implements OnContactListener {
         Typeface typeface = ResourcesCompat.getFont(this.getContext(), R.font.dseg);
         paintScore.setTypeface(typeface);
         paintScore.setColor(Color.WHITE);
-        paintPause = new Paint();
-        paintPause.setColor(Color.WHITE);
-        paintPause.setTextSize(30);
         paintCircle = new Paint();
         paintCircle.setColor(Color.argb(40, 0, 0, 0));
+        paintPause = new Paint(paintCircle);
+        paintPause.setColor(Color.WHITE);
+        paintPause.setTextSize(30);
+
         bonk.setCoins(2);
     }
 
@@ -228,7 +273,8 @@ class Scene01 extends TiledScene implements OnContactListener {
         //contact between Bonk and mushroom == speed up and jump up
         else if (tag2.equals("speed")) {
             object2.removeFromScene();
-            bonk.superBonk();
+            bonk.superrun();
+            //bonk.superBonk();
         }
     }
 
@@ -274,7 +320,7 @@ class Scene01 extends TiledScene implements OnContactListener {
             int yy = (int) ((getScaledHeight() / 2) - ((paintScore.descent() + paintScore.ascent()) / 2));
             //Log.d("flx", "xx " + xx + " yy " + yy);
             canvas.drawCircle(xx, yy, 50, paintCircle);
-            canvas.drawText("| |", xx,yy, paintPause);
+            canvas.drawText("| |", xx - 10,yy, paintPause);
             //((textPaint.descent() + textPaint.ascent()) / 2) is the distance from the baseline to the center.
         }
 

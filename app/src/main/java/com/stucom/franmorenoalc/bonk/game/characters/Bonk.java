@@ -38,7 +38,7 @@ public class Bonk extends GameObject {
     private final static int STATE_FALLING_RIGHT = 7;
     private final static int STATE_JUMPING_FRONT = 8;
     private final static int STATE_TOUCHED = 9;
-    private final static int STATE_SUPERBONK = 10;
+    private final static int STATE_SUPERRUN = 10;
 
 
 
@@ -46,7 +46,7 @@ public class Bonk extends GameObject {
     private static final int[] NEW_STATES = {
         STATE_JUMPING_LEFT, STATE_JUMPING_FRONT, STATE_JUMPING_RIGHT,
         STATE_WALKING_LEFT, STATE_STANDING_FRONT, STATE_WALKING_RIGHT,
-        STATE_FALLING_LEFT, STATE_JUMPING_FRONT, STATE_FALLING_RIGHT, STATE_TOUCHED, STATE_SUPERBONK
+        STATE_FALLING_LEFT, STATE_JUMPING_FRONT, STATE_FALLING_RIGHT, STATE_TOUCHED, STATE_SUPERRUN
     };
 
     // Constructor
@@ -59,6 +59,7 @@ public class Bonk extends GameObject {
             this.addSpriteSequence(i, i); // The first 0-8 states are indexed animations 0-8
         }
         this.addSpriteSequence(9,12);
+        this.addSpriteSequence(10,16);
     }
 
     //Lifes Remaining
@@ -103,6 +104,8 @@ public class Bonk extends GameObject {
     public void touched(){
         changeState(STATE_TOUCHED);
     }
+
+    public void superrun() { changeState(STATE_SUPERRUN);}
 
     // User input helper methods
     private boolean left, right, jump;

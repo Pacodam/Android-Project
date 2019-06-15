@@ -57,8 +57,8 @@ class Scene02 extends TiledScene implements OnContactListener {
         bonk = new Bonk(game, 0, 0);
         this.add(bonk);
         //door = new Door(game, 1072,384);
-        door = new Door(game,80,80);
-        this.add(door);
+        //door = new Door(game,80,80);
+        //this.add(door);
         //door.removeFromScene();
         // Set the follow camera to the player
         this.setCamera(bonk);
