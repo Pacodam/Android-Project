@@ -1,18 +1,14 @@
 package com.stucom.franmorenoalc.bonk.game;
 
 import android.content.SharedPreferences;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 
-import android.os.Handler;
-import android.support.v4.content.res.ResourcesCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 
 import com.stucom.franmorenoalc.R;
-import com.stucom.franmorenoalc.RegistryActivity;
 import com.stucom.franmorenoalc.bonk.engine.Game;
 import com.stucom.franmorenoalc.bonk.engine.GameEngine;
 import com.stucom.franmorenoalc.bonk.engine.GameObject;
@@ -20,9 +16,10 @@ import com.stucom.franmorenoalc.bonk.engine.OnContactListener;
 import com.stucom.franmorenoalc.bonk.engine.TiledScene;
 import com.stucom.franmorenoalc.bonk.engine.Touch;
 import com.stucom.franmorenoalc.bonk.game.characters.Bonk;
-import com.stucom.franmorenoalc.bonk.game.characters.Coin;
-import com.stucom.franmorenoalc.bonk.game.characters.Crab;
 import com.stucom.franmorenoalc.bonk.game.characters.Door;
+import com.stucom.franmorenoalc.bonk.game.characters.Firework1;
+import com.stucom.franmorenoalc.bonk.game.characters.Firework2;
+import com.stucom.franmorenoalc.bonk.game.characters.Firework3;
 import com.stucom.franmorenoalc.bonk.game.characters.Speed;
 
 import java.util.Locale;
@@ -51,12 +48,12 @@ class Scene03 extends TiledScene implements OnContactListener {
         super(game);
         // Load the bitmap set for this game
         GameEngine gameEngine = game.getGameEngine();
-        gameEngine.loadBitmapSet(R.raw.spr, R.raw.sprites_info, R.raw.sprites_seq);
+        gameEngine.loadBitmapSet(R.raw.sprites2, R.raw.sprites_info, R.raw.sprites_seq);
         //getToken();
         // Create the main character (player)
         bonk = new Bonk(game, 0, 0);
         this.add(bonk);
-        door = new Door(game,368,128 );
+        door = new Door(game,464,432 );
         this.add(door);
         door.isOpened();
         // Set the follow camera to the player
@@ -69,7 +66,11 @@ class Scene03 extends TiledScene implements OnContactListener {
         this.loadFromFile(R.raw.mini03);
         // Add contact listeners by tag names
         //this.addContactListener("bonk", "enemy", this);
+        this.addContactListener("bonk", "f1", this);
+        this.addContactListener("bonk", "f2", this);
+        this.addContactListener("bonk", "f3", this);
         this.addContactListener("bonk","door",this);
+        this.addContactListener("bonk","speed",this);
         // Prepare the painters for drawing
         paintKeyBackground = new Paint();
         paintKeyBackground.setColor(Color.argb(20, 0, 0, 0));
@@ -85,7 +86,7 @@ class Scene03 extends TiledScene implements OnContactListener {
         paintPause = new Paint(paintCircle);
         paintPause.setColor(Color.WHITE);
         paintPause.setTextSize(30);
-        
+
     }
 
 
@@ -94,21 +95,34 @@ class Scene03 extends TiledScene implements OnContactListener {
     @Override
     protected GameObject parseLine(String cmd, String args) {
         // Lines beginning with "COIN"
-        if (cmd.equals("COIN")) {
+        if (cmd.equals("F1")) {
             String[] parts2 = args.split(",");
             if (parts2.length != 2) return null;
             int coinX = Integer.parseInt(parts2[0].trim()) * 16;
             int coinY = Integer.parseInt(parts2[1].trim()) * 16;
-            return new Coin(game, coinX, coinY);
+            return new Firework1(game, coinX, coinY);
         }
-        if(cmd.equals("DOOR")) {
+        if (cmd.equals("F2")) {
             String[] parts2 = args.split(",");
             if (parts2.length != 2) return null;
-            this.doorX = Integer.parseInt(parts2[0].trim()) * 16;
-            this.doorY = Integer.parseInt(parts2[1].trim()) * 16;
-            Door door = new Door(game, doorX, doorY);
-            door.isOpened();
-            return new Door(game, doorX, doorY);
+            int coinX = Integer.parseInt(parts2[0].trim()) * 16;
+            int coinY = Integer.parseInt(parts2[1].trim()) * 16;
+            return new Firework2(game, coinX, coinY);
+        }
+        if (cmd.equals("F3")) {
+            String[] parts2 = args.split(",");
+            if (parts2.length != 2) return null;
+            int coinX = Integer.parseInt(parts2[0].trim()) * 16;
+            int coinY = Integer.parseInt(parts2[1].trim()) * 16;
+            return new Firework3(game, coinX, coinY);
+        }
+
+        if(cmd.equals("MUSHROOM")) {
+            String[] parts2 = args.split(",");
+            if (parts2.length != 2) return null;
+            int mushroomX = Integer.parseInt(parts2[0].trim()) * 16;
+            int mushroomY = Integer.parseInt(parts2[1].trim()) * 16;
+            return new Speed(game, mushroomX, mushroomY);
         }
 
         // Test the common basic parser
@@ -172,7 +186,19 @@ class Scene03 extends TiledScene implements OnContactListener {
         //contact between Bonk and door == next level!
         if (tag2.equals("door")) {
             game.stopMusic();
+
+            //save score to shared prefs
+            SharedPreferences prefs = getGameEngine().receiveContext().getSharedPreferences(getGameEngine().receiveContext().getPackageName(), MODE_PRIVATE);
+            SharedPreferences.Editor ed = prefs.edit();
+            ed.putString("score", String.valueOf(bonk.getScore()));
+            ed.apply();
             getGameEngine().returnMenu();
+        }
+        //contact between Bonk and mushroom == speed up and jump up
+        else if (tag2.equals("speed")) {
+            object2.removeFromScene();
+            bonk.superrun();
+            bonk.superBonk();
         }
 
     }

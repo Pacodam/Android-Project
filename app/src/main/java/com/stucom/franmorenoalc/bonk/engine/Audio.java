@@ -16,7 +16,7 @@ public class Audio {
 
     // Constructor
     @SuppressWarnings("deprecation")
-    Audio(Context context) {
+    public Audio(Context context) {
         this.context = context;
         // Prepping the sound pool
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
