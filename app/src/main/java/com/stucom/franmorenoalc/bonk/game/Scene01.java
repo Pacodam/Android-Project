@@ -72,16 +72,16 @@ class Scene01 extends TiledScene implements OnContactListener {
         paintKeySymbol.setColor(Color.GRAY);
         paintKeySymbol.setTextSize(10);
         paintScore = new Paint(paintKeySymbol);
-        Typeface typeface = ResourcesCompat.getFont(this.getContext(), R.font.dseg);
-        paintScore.setTypeface(typeface);
-        paintScore.setColor(Color.WHITE);
+        //Typeface typeface = ResourcesCompat.getFont(this.getContext(), R.font.dseg);
+        //paintScore.setTypeface(typeface);
+        paintScore.setColor(Color.BLUE);
         paintCircle = new Paint();
         paintCircle.setColor(Color.argb(40, 0, 0, 0));
         paintPause = new Paint(paintCircle);
         paintPause.setColor(Color.WHITE);
-        paintPause.setTextSize(30);
+        paintPause.setTextSize(35);
 
-        bonk.setCoins(2);
+        bonk.setCoins(10);
     }
 
     //constructor for teleporter events
@@ -116,9 +116,9 @@ class Scene01 extends TiledScene implements OnContactListener {
         paintKeySymbol.setColor(Color.GRAY);
         paintKeySymbol.setTextSize(10);
         paintScore = new Paint(paintKeySymbol);
-        Typeface typeface = ResourcesCompat.getFont(this.getContext(), R.font.dseg);
-        paintScore.setTypeface(typeface);
-        paintScore.setColor(Color.WHITE);
+        //Typeface typeface = ResourcesCompat.getFont(this.getContext(), R.font.dseg);
+        //paintScore.setTypeface(typeface);
+        paintScore.setColor(Color.BLUE);
         paintCircle = new Paint();
         paintCircle.setColor(Color.argb(40, 0, 0, 0));
         paintPause = new Paint(paintCircle);
@@ -274,7 +274,7 @@ class Scene01 extends TiledScene implements OnContactListener {
         else if (tag2.equals("speed")) {
             object2.removeFromScene();
             bonk.superrun();
-            //bonk.superBonk();
+            bonk.superBonk();
         }
     }
 
@@ -304,7 +304,7 @@ class Scene01 extends TiledScene implements OnContactListener {
         paintScore.setTextSize(10);
         String score = String.format(Locale.getDefault(), "%06d", bonk.getScore());
         canvas.drawText(score, getScaledWidth() - 50, 10, paintScore);
-        canvas.drawText("lives: " + bonk.getLives(), getScaledWidth() - 50 , 20, paintScore);
+        canvas.drawText("LIVES: " + bonk.getLives(), getScaledWidth() - 50 , 20, paintScore);
 
         //remaining coins to get
         canvas.drawText("COINS LEFT: " + bonk.getLeftCoins(), 80,10, paintScore);

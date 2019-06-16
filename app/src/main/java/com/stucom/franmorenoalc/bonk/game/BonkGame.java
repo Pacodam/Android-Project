@@ -20,7 +20,7 @@ public class BonkGame extends Game {
     @Override
     public void start() {
         // When the game is loaded, the Scene01 is presented to the user
-        Scene01 scene = new Scene01(this);
+        Scene03 scene = new Scene03(this);
         this.loadScene(scene);
         // Background music
         this.loadMusic(R.raw.papaya2);

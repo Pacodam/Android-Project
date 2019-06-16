@@ -20,11 +20,17 @@ GROUND = <->[#]
 WALLS  = [#]
 WATER  = 9,23,24,25
 
-COIN   = 0,7
-COIN   = 12,7
-COIN   = 17,6
-COIN   = 18,4
-COIN   = 19,3
-COIN   = 20,4
-COIN   = 21,6
-CRAB   = 0,10,14
+COIN   = 0,12
+COIN   = 2,12
+COIN   = 4,12
+COIN   = 6,12
+COIN   = 8,12
+COIN   = 10,12
+COIN   = 12,12
+COIN   = 14,12
+COIN   = 16,12
+COIN   = 18,12
+
+CRAB   = 0,24,14
+
+MUSHROOM = 26,14

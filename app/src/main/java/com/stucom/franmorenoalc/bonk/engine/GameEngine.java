@@ -18,6 +18,7 @@ import android.view.View;
 
 import com.stucom.franmorenoalc.MainActivity;
 import com.stucom.franmorenoalc.R;
+import com.stucom.franmorenoalc.bonk.game.GameOptionsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -237,5 +238,14 @@ public class GameEngine extends View implements Runnable, SensorEventListener {
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 }).show();
+    }
+
+    public void returnMenu(){
+        Intent intent = new Intent(contex, GameOptionsActivity.class);
+        contex.startActivity(intent);
+    }
+
+    public Context receiveContext(){
+        return contex;
     }
 }
