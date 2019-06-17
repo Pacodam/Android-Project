@@ -218,7 +218,7 @@ public class GameEngine extends View implements Runnable, SensorEventListener {
                 .setCancelable(false)
                 .setPositiveButton("Menu", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent(contex, MainActivity.class);
+                        Intent intent = new Intent(contex, GameOptionsActivity.class);
                         contex.startActivity(intent);
                     }
                 })

@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 
 import com.stucom.franmorenoalc.R;
-import com.stucom.franmorenoalc.RegistryActivity;
 import com.stucom.franmorenoalc.bonk.engine.Game;
 import com.stucom.franmorenoalc.bonk.engine.GameEngine;
 import com.stucom.franmorenoalc.bonk.engine.GameObject;
@@ -27,8 +26,6 @@ import com.stucom.franmorenoalc.bonk.game.characters.Speed;
 
 import java.util.Locale;
 
-import static android.content.Context.MODE_PRIVATE;
-
 
 // A fully playable tiled scene
 class Scene02 extends TiledScene implements OnContactListener {
@@ -42,20 +39,18 @@ class Scene02 extends TiledScene implements OnContactListener {
 
     //door coordinates to make appear when coins are recollected
     private Door door;
-    private int doorX;
-    private int doorY;
-
 
     // Constructor
-    Scene02(Game game, int score) {
+    Scene02(Game game, Bonk b) {
         super(game);
         // Load the bitmap set for this game
         GameEngine gameEngine = game.getGameEngine();
         gameEngine.loadBitmapSet(R.raw.spr, R.raw.sprites_info, R.raw.sprites_seq);
         //getToken();
         // Create the main character (player)
-        bonk = new Bonk(game, 0, 0);
-        bonk.setScore(score);
+        bonk = new Bonk(game,0,0);
+        bonk.setScore(b.getScore());
+        bonk.setLives(b.getLives());
         this.add(bonk);
         door = new Door(game,368,0 );
         this.add(door);
@@ -79,14 +74,14 @@ class Scene02 extends TiledScene implements OnContactListener {
         paintKeySymbol.setColor(Color.GRAY);
         paintKeySymbol.setTextSize(10);
         paintScore = new Paint(paintKeySymbol);
-        Typeface typeface = ResourcesCompat.getFont(this.getContext(), R.font.dseg);
-        paintScore.setTypeface(typeface);
-        paintScore.setColor(Color.WHITE);
+        //Typeface typeface = ResourcesCompat.getFont(this.getContext(), R.font.dseg);
+        //paintScore.setTypeface(typeface);
+        paintScore.setColor(Color.BLUE);
         paintCircle = new Paint();
         paintCircle.setColor(Color.argb(40, 0, 0, 0));
         paintPause = new Paint(paintCircle);
         paintPause.setColor(Color.WHITE);
-        paintPause.setTextSize(30);
+        paintPause.setTextSize(35);
 
         bonk.setCoins(10);
     }
@@ -115,8 +110,6 @@ class Scene02 extends TiledScene implements OnContactListener {
         if(cmd.equals("DOOR")) {
             String[] parts2 = args.split(",");
             if (parts2.length != 2) return null;
-            this.doorX = Integer.parseInt(parts2[0].trim()) * 16;
-            this.doorY = Integer.parseInt(parts2[1].trim()) * 16;
             //Door door = new Door(game, doorX, doorY);
             //return new Door(game, doorX, doorY);
         }
@@ -226,7 +219,7 @@ class Scene02 extends TiledScene implements OnContactListener {
             //this.getGame().getAudio().playSoundFX(1);
             //GameActivity gm = (GameActivity) getContext();
             if(door.getState() == 1) {
-                game.loadScene(new Scene03(game, bonk.getScore()));
+                game.loadScene(new Scene03(game, bonk));
                 game.stopMusic();
                 game.loadMusic(R.raw.fireworks);
             }else{

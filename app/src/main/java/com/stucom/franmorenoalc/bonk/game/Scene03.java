@@ -42,15 +42,16 @@ class Scene03 extends TiledScene implements OnContactListener {
     private Door door;
 
     // Constructor
-    Scene03(Game game, int score) {
+    Scene03(Game game, Bonk b) {
         super(game);
         // Load the bitmap set for this game
         GameEngine gameEngine = game.getGameEngine();
         gameEngine.loadBitmapSet(R.raw.sprites2, R.raw.sprites_info, R.raw.sprites_seq);
         //getToken();
         // Create the main character (player)
-        bonk = new Bonk(game, 0, 0);
-        bonk.setScore(score);
+        bonk = new Bonk(game,0,0);
+        bonk.setScore(b.getScore());
+        bonk.setLives(b.getLives());
         this.add(bonk);
         door = new Door(game,464,432 );
         this.add(door);
@@ -209,7 +210,7 @@ class Scene03 extends TiledScene implements OnContactListener {
                 public void run() {
                     bonk.setJump(-11);
                 }
-            }, 10000);
+            }, 20000);
         }
 
     }

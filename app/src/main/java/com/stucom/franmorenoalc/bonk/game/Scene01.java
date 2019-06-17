@@ -1,5 +1,6 @@
 package com.stucom.franmorenoalc.bonk.game;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,6 +10,7 @@ import android.os.Handler;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 
 import com.stucom.franmorenoalc.R;
 import com.stucom.franmorenoalc.bonk.engine.Game;
@@ -36,10 +38,6 @@ class Scene01 extends TiledScene implements OnContactListener {
 
     //door coordinates to make appear when coins are recollected
     private Door door;
-    private int doorX;
-    private int doorY;
-
-
     // Constructor
     Scene01(Game game) {
         super(game);
@@ -108,8 +106,6 @@ class Scene01 extends TiledScene implements OnContactListener {
         if(cmd.equals("DOOR")) {
             String[] parts2 = args.split(",");
             if (parts2.length != 2) return null;
-            this.doorX = Integer.parseInt(parts2[0].trim()) * 16;
-            this.doorY = Integer.parseInt(parts2[1].trim()) * 16;
             //Door door = new Door(game, doorX, doorY);
             //return new Door(game, doorX, doorY);
         }
@@ -219,7 +215,7 @@ class Scene01 extends TiledScene implements OnContactListener {
             //this.getGame().getAudio().playSoundFX(1);
             //GameActivity gm = (GameActivity) getContext();
             if(door.getState() == 1) {
-                game.loadScene(new Scene02(game, bonk.getScore()));
+                game.loadScene(new Scene02(game, bonk));
                 game.stopMusic();
                 game.loadMusic(R.raw.papaya);
             }else{
@@ -238,7 +234,7 @@ class Scene01 extends TiledScene implements OnContactListener {
                 public void run() {
                     bonk.setJump(-11);
                 }
-            }, 10000);
+            }, 20000);
         }
     }
 
@@ -263,21 +259,21 @@ class Scene01 extends TiledScene implements OnContactListener {
         canvas.drawText("^", 88, 92, paintKeySymbol);
         canvas.restore();
 
+
+
         // Score on top-right corner
         canvas.scale(getScale(), getScale());
         paintScore.setTextSize(10);
+
+        canvas.drawText("<< EXIT",  10, 10, paintScore);
+
         String score = String.format(Locale.getDefault(), "%06d", bonk.getScore());
         canvas.drawText(score, getScaledWidth() - 50, 10, paintScore);
         canvas.drawText("LIVES: " + bonk.getLives(), getScaledWidth() - 50 , 20, paintScore);
 
         //remaining coins to get
         canvas.drawText("COINS LEFT: " + bonk.getLeftCoins(), 80,10, paintScore);
-        /*
-        //remaining lives down score
-        //canvas.scale(getScale(), getScale());
-        paintLives.setTextSize(10);
-        String lives =  Integer.toString(bonk.getLives());
-        canvas.drawText(lives, getScaledWidth() - 10, 8, paintLives); */
+
 
         if(game.isPaused()){
             int xx = getScaledWidth() / 2;
@@ -288,19 +284,13 @@ class Scene01 extends TiledScene implements OnContactListener {
             //((textPaint.descent() + textPaint.ascent()) / 2) is the distance from the baseline to the center.
         }
 
+        if(bonk.getJumpVelocity() > -11) {
+            canvas.drawText(String.valueOf(bonk.getRemainingJump()), 80, 20, paintScore);
+        }
+
     }
 
 
-/*
-    public void drawPause(Canvas canvas, int x, int y) {
-        src.left = 0;
-        src.top = 0;
-        src.right = 32;
-        src.bottom = 32;
-        dst.left = x;
-        dst.top = y;
-        dst.right = dst.left + TILE_SIZE;
-        dst.bottom = dst.top + TILE_SIZE;
-        canvas.drawBitmap(worm, src, dst, paint);
-    } */
+
+
 }

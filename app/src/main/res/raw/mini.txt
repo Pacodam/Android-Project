@@ -93,7 +93,7 @@ COIN   = 65,23
 
 DOOR   = 67,24
 
-CRAB   = 6,8,9
+CRAB   = 5,8,9
 CRAB   = 22,28,9
 CRAB   = 2,9,15
 CRAB   = 15,21,15

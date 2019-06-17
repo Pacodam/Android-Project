@@ -229,8 +229,17 @@ public class Bonk extends GameObject {
         );
     }
 
+    public void setLives(int lives){
+        this.lives = lives;
+    }
+
     public void setJump(int jump){
         this.JUMP_VELOCITY = jump;
     }
+
+    public int getJumpVelocity(){
+        return JUMP_VELOCITY;
+    }
+
 
 }
