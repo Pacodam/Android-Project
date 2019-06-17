@@ -63,7 +63,7 @@ class Scene02 extends TiledScene implements OnContactListener {
         // Load the scene tiles from resource
         this.loadFromFile(R.raw.mini2);
         // Add contact listeners by tag names
-        //this.addContactListener("bonk", "enemy", this);
+        this.addContactListener("bonk", "enemy", this);
         this.addContactListener("bonk", "coin", this);
         this.addContactListener("bonk","door",this);
         this.addContactListener("bonk","speed",this);

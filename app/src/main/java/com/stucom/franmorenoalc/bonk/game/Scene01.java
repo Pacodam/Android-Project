@@ -20,6 +20,7 @@ import com.stucom.franmorenoalc.bonk.engine.OnContactListener;
 import com.stucom.franmorenoalc.bonk.engine.TiledScene;
 import com.stucom.franmorenoalc.bonk.engine.Touch;
 import com.stucom.franmorenoalc.bonk.game.characters.Bonk;
+import com.stucom.franmorenoalc.bonk.game.characters.Boss;
 import com.stucom.franmorenoalc.bonk.game.characters.Coin;
 import com.stucom.franmorenoalc.bonk.game.characters.Crab;
 import com.stucom.franmorenoalc.bonk.game.characters.Door;
@@ -43,7 +44,7 @@ class Scene01 extends TiledScene implements OnContactListener {
         super(game);
         // Load the bitmap set for this game
         GameEngine gameEngine = game.getGameEngine();
-        gameEngine.loadBitmapSet(R.raw.spr, R.raw.sprites_info, R.raw.sprites_seq);
+        gameEngine.loadBitmapSet(R.raw.spritesdef, R.raw.sprites_info, R.raw.sprites_seq);
 
         // Create the main character (player)
         bonk = new Bonk(game, 0, 0);
@@ -63,6 +64,7 @@ class Scene01 extends TiledScene implements OnContactListener {
         this.addContactListener("bonk", "coin", this);
         this.addContactListener("bonk","door",this);
         this.addContactListener("bonk","speed",this);
+        this.addContactListener("bonk","boss",this);
         // Prepare the painters for drawing
         paintKeyBackground = new Paint();
         paintKeyBackground.setColor(Color.argb(20, 0, 0, 0));
@@ -115,6 +117,13 @@ class Scene01 extends TiledScene implements OnContactListener {
             int doorX = Integer.parseInt(parts2[0].trim()) * 16;
             int doorY = Integer.parseInt(parts2[1].trim()) * 16;
             return new Speed(game, doorX, doorY);
+        }
+        if (cmd.equals("BOSS")) {
+            String[] parts2 = args.split(",");
+            if (parts2.length != 2) return null;
+            int bossx = Integer.parseInt(parts2[0].trim()) * 16;
+            int bossy = Integer.parseInt(parts2[1].trim()) * 16;
+            return new Boss(game, bossx, bossy, bonk);
         }
 
         // Test the common basic parser
@@ -210,14 +219,37 @@ class Scene01 extends TiledScene implements OnContactListener {
                 getGameEngine().gameOverDialog(bonk.getScore());
             }
         }
+        else if (tag2.equals("boss")) {
+            if(bonk.getLives() > 0){
+                this.getGame().getAudio().playSoundFX(3);
+                bonk.touched();
+                object2.removeFromScene();
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        bonk.quitLives();
+                        bonk.reset(0,0);
+                    }
+                }, 2000);
+            }
+            else {
+                this.getGame().getAudio().playSoundFX(1);
+                object2.removeFromScene();
+                bonk.die();
+                getGameEngine().gameOverDialog(bonk.getScore());
+            }
+        }
+
         //contact between Bonk and door == next level!
         else if (tag2.equals("door")) {
             //this.getGame().getAudio().playSoundFX(1);
             //GameActivity gm = (GameActivity) getContext();
             if(door.getState() == 1) {
-                game.loadScene(new Scene02(game, bonk));
                 game.stopMusic();
                 game.loadMusic(R.raw.papaya);
+                game.loadScene(new Scene02(game, bonk));
+
             }else{
                 getGameEngine().alertLeftCoins(bonk.getLeftCoins());
             }

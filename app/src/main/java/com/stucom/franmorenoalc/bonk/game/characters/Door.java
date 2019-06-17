@@ -38,10 +38,10 @@ public class Door extends GameObject {
 
     } */
 
+
     @Override public void updateCollisionRect() {
         collisionRect.set(x, y, x + 30, y + 30);
     }
-
 
 
 }
