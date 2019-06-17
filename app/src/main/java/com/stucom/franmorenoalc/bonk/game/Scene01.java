@@ -61,7 +61,7 @@ class Scene01 extends TiledScene implements OnContactListener {
         // Load the scene tiles from resource
         this.loadFromFile(R.raw.mini);
         // Add contact listeners by tag names
-        //this.addContactListener("bonk", "enemy", this);
+        this.addContactListener("bonk", "enemy", this);
         this.addContactListener("bonk", "coin", this);
         this.addContactListener("bonk","door",this);
         this.addContactListener("bonk","speed",this);
@@ -84,49 +84,6 @@ class Scene01 extends TiledScene implements OnContactListener {
         bonk.setCoins(10);
     }
 
-    //constructor for teleporter events
-    Scene01(Game game, int xx, int yy) {
-        super(game);
-        // Load the bitmap set for this game
-        GameEngine gameEngine = game.getGameEngine();
-        gameEngine.loadBitmapSet(R.raw.doorcop, R.raw.sprites_info, R.raw.sprites_seq);
-
-        // Create the main character (player)
-        bonk = new Bonk(game, 0, 0);
-        this.add(bonk);
-        door = new Door(game,1072,384 );
-        this.add(door);
-        // Set the follow camera to the player
-        this.setCamera(bonk);
-        // The screen will hold 16 rows of tiles (16px height each)
-        this.setScaledHeight(16 * 16);
-        // Pre-loading of sound effects
-        game.getAudio().loadSoundFX(new int[]{ R.raw.coin, R.raw.die, R.raw.pause, R.raw.boycry, R.raw.door_open } );
-        // Load the scene tiles from resource
-        this.loadFromFile(R.raw.mini);
-        // Add contact listeners by tag names
-        this.addContactListener("bonk", "enemy", this);
-        this.addContactListener("bonk", "coin", this);
-        this.addContactListener("bonk","door",this);
-        this.addContactListener("bonk","speed",this);
-        // Prepare the painters for drawing
-        paintKeyBackground = new Paint();
-        paintKeyBackground.setColor(Color.argb(20, 0, 0, 0));
-        paintKeySymbol = new Paint();
-        paintKeySymbol.setColor(Color.GRAY);
-        paintKeySymbol.setTextSize(10);
-        paintScore = new Paint(paintKeySymbol);
-        //Typeface typeface = ResourcesCompat.getFont(this.getContext(), R.font.dseg);
-        //paintScore.setTypeface(typeface);
-        paintScore.setColor(Color.BLUE);
-        paintCircle = new Paint();
-        paintCircle.setColor(Color.argb(40, 0, 0, 0));
-        paintPause = new Paint(paintCircle);
-        paintPause.setColor(Color.WHITE);
-        paintPause.setTextSize(30);
-
-        bonk.setCoins(2);
-    }
 
     // Overrides the base parser adding specific syntax for coins and crabs
     @Override
@@ -262,7 +219,7 @@ class Scene01 extends TiledScene implements OnContactListener {
             //this.getGame().getAudio().playSoundFX(1);
             //GameActivity gm = (GameActivity) getContext();
             if(door.getState() == 1) {
-                game.loadScene(new Scene02(game));
+                game.loadScene(new Scene02(game, bonk.getScore()));
                 game.stopMusic();
                 game.loadMusic(R.raw.papaya);
             }else{
@@ -273,8 +230,15 @@ class Scene01 extends TiledScene implements OnContactListener {
         //contact between Bonk and mushroom == speed up and jump up
         else if (tag2.equals("speed")) {
             object2.removeFromScene();
-            bonk.superrun();
-            bonk.superBonk();
+            bonk.setJump(-30);
+            bonk.setRemainingJump(10);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    bonk.setJump(-11);
+                }
+            }, 10000);
         }
     }
 

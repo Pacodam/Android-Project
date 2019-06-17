@@ -3,8 +3,7 @@ package com.stucom.franmorenoalc.bonk.game;
 import com.stucom.franmorenoalc.R;
 import com.stucom.franmorenoalc.bonk.engine.Game;
 import com.stucom.franmorenoalc.bonk.engine.GameEngine;
-import com.stucom.franmorenoalc.bonk.engine.GameObject;
-import com.stucom.franmorenoalc.bonk.engine.Scene;
+
 
 // This game is a Game instance
 public class BonkGame extends Game {
@@ -20,7 +19,7 @@ public class BonkGame extends Game {
     @Override
     public void start() {
         // When the game is loaded, the Scene01 is presented to the user
-        Scene03 scene = new Scene03(this);
+        Scene01 scene = new Scene01(this);
         this.loadScene(scene);
         // Background music
         this.loadMusic(R.raw.papaya2);

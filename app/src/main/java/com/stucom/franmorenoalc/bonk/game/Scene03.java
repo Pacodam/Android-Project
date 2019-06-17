@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import android.os.Handler;
 import android.view.KeyEvent;
 
 import com.stucom.franmorenoalc.R;
@@ -34,17 +35,14 @@ class Scene03 extends TiledScene implements OnContactListener {
     // We keep a specific reference to the player
     private Bonk bonk;
     // Used for specific painting
-    private Paint paintKeySymbol, paintKeyBackground, paintScore, paintPause, paintCircle;
+    private Paint paintKeySymbol, paintKeyBackground, paintScore, paintPause, paintCircle, paintGoodbye;
 
 
     //door coordinates to make appear when coins are recollected
     private Door door;
-    private int doorX;
-    private int doorY;
-
 
     // Constructor
-    Scene03(Game game) {
+    Scene03(Game game, int score) {
         super(game);
         // Load the bitmap set for this game
         GameEngine gameEngine = game.getGameEngine();
@@ -52,6 +50,7 @@ class Scene03 extends TiledScene implements OnContactListener {
         //getToken();
         // Create the main character (player)
         bonk = new Bonk(game, 0, 0);
+        bonk.setScore(score);
         this.add(bonk);
         door = new Door(game,464,432 );
         this.add(door);
@@ -65,10 +64,6 @@ class Scene03 extends TiledScene implements OnContactListener {
         // Load the scene tiles from resource
         this.loadFromFile(R.raw.mini03);
         // Add contact listeners by tag names
-        //this.addContactListener("bonk", "enemy", this);
-        this.addContactListener("bonk", "f1", this);
-        this.addContactListener("bonk", "f2", this);
-        this.addContactListener("bonk", "f3", this);
         this.addContactListener("bonk","door",this);
         this.addContactListener("bonk","speed",this);
         // Prepare the painters for drawing
@@ -77,15 +72,25 @@ class Scene03 extends TiledScene implements OnContactListener {
         paintKeySymbol = new Paint();
         paintKeySymbol.setColor(Color.GRAY);
         paintKeySymbol.setTextSize(10);
-        paintScore = new Paint(paintKeySymbol);
+        //paintScore = new Paint(paintKeySymbol);
         //Typeface typeface = ResourcesCompat.getFont(this.getContext(), R.font.dseg);
         //paintScore.setTypeface(typeface);
-        paintScore.setColor(Color.BLUE);
+        //paintScore.setColor(Color.WHITE);
         paintCircle = new Paint();
         paintCircle.setColor(Color.argb(40, 0, 0, 0));
         paintPause = new Paint(paintCircle);
         paintPause.setColor(Color.WHITE);
-        paintPause.setTextSize(30);
+        paintPause.setTextSize(15);
+
+        paintGoodbye = new Paint();
+        paintGoodbye.setColor(Color.WHITE);
+        paintGoodbye.setTextSize(30);
+        paintScore = new Paint(paintGoodbye);
+        paintScore.setColor(Color.WHITE);
+        paintScore.setTextSize(15);
+
+
+
 
     }
 
@@ -186,7 +191,7 @@ class Scene03 extends TiledScene implements OnContactListener {
         //contact between Bonk and door == next level!
         if (tag2.equals("door")) {
             game.stopMusic();
-
+            //bonk.setScore(300);
             //save score to shared prefs
             SharedPreferences prefs = getGameEngine().receiveContext().getSharedPreferences(getGameEngine().receiveContext().getPackageName(), MODE_PRIVATE);
             SharedPreferences.Editor ed = prefs.edit();
@@ -197,15 +202,17 @@ class Scene03 extends TiledScene implements OnContactListener {
         //contact between Bonk and mushroom == speed up and jump up
         else if (tag2.equals("speed")) {
             object2.removeFromScene();
-            bonk.superrun();
-            bonk.superBonk();
+            bonk.setJump(-30);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    bonk.setJump(-11);
+                }
+            }, 10000);
         }
 
     }
-
-
-
-
 
     // Overrides the basic draw by adding the translucent keyboard and the score
     @Override
@@ -226,23 +233,18 @@ class Scene03 extends TiledScene implements OnContactListener {
 
         // Score on top-right corner
         canvas.scale(getScale(), getScale());
-        paintScore.setTextSize(10);
+        int xx = getScaledWidth() / 2;
+        int yy = (int) ((getScaledHeight() / 2) - ((paintScore.descent() + paintScore.ascent()) / 2));
+        //Log.d("flx", "xx " + xx + " yy " + yy);
         String score = String.format(Locale.getDefault(), "%06d", bonk.getScore());
-        canvas.drawText(score, getScaledWidth() - 50, 10, paintScore);
-        canvas.drawText("lives: " + bonk.getLives(), getScaledWidth() - 50 , 20, paintScore);
+        canvas.drawText("Congratulations!", xx , 20, paintScore);
+        canvas.drawText("You made " + score + " points",  xx, 40, paintScore);
 
-        //remaining coins to get
-        canvas.drawText("COINS LEFT: " + bonk.getLeftCoins(), 80,10, paintScore);
-        /*
-        //remaining lives down score
-        //canvas.scale(getScale(), getScale());
-        paintLives.setTextSize(10);
-        String lives =  Integer.toString(bonk.getLives());
-        canvas.drawText(lives, getScaledWidth() - 10, 8, paintLives); */
+
 
         if(game.isPaused()){
-            int xx = getScaledWidth() / 2;
-            int yy = (int) ((getScaledHeight() / 2) - ((paintScore.descent() + paintScore.ascent()) / 2));
+            xx = getScaledWidth() / 2;
+            yy = (int) ((getScaledHeight() / 2) - ((paintScore.descent() + paintScore.ascent()) / 2));
             //Log.d("flx", "xx " + xx + " yy " + yy);
             canvas.drawCircle(xx, yy, 50, paintCircle);
             canvas.drawText("| |", xx - 10,yy, paintPause);

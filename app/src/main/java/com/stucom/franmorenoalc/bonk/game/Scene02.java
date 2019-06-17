@@ -47,7 +47,7 @@ class Scene02 extends TiledScene implements OnContactListener {
 
 
     // Constructor
-    Scene02(Game game) {
+    Scene02(Game game, int score) {
         super(game);
         // Load the bitmap set for this game
         GameEngine gameEngine = game.getGameEngine();
@@ -55,6 +55,7 @@ class Scene02 extends TiledScene implements OnContactListener {
         //getToken();
         // Create the main character (player)
         bonk = new Bonk(game, 0, 0);
+        bonk.setScore(score);
         this.add(bonk);
         door = new Door(game,368,0 );
         this.add(door);
@@ -225,7 +226,7 @@ class Scene02 extends TiledScene implements OnContactListener {
             //this.getGame().getAudio().playSoundFX(1);
             //GameActivity gm = (GameActivity) getContext();
             if(door.getState() == 1) {
-                game.loadScene(new Scene03(game));
+                game.loadScene(new Scene03(game, bonk.getScore()));
                 game.stopMusic();
                 game.loadMusic(R.raw.fireworks);
             }else{
@@ -236,8 +237,14 @@ class Scene02 extends TiledScene implements OnContactListener {
         //contact between Bonk and mushroom == speed up and jump up
         else if (tag2.equals("speed")) {
             object2.removeFromScene();
-            bonk.superrun();
-            bonk.superBonk();
+            bonk.setJump(-30);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    bonk.setJump(-11);
+                }
+            }, 10000);
         }
     }
 

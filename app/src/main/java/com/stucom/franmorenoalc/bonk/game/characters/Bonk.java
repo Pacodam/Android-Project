@@ -19,6 +19,7 @@ public class Bonk extends GameObject {
     private int score;
     private int lives;
     private int coinsLeft;
+    private int remainingJump;
 
     // Useful constants
     private static  int MAX_VELOCITY = 8;
@@ -76,6 +77,9 @@ public class Bonk extends GameObject {
     public void setCoins(int coins){ this.coinsLeft = coins;}
     public void quitCoin(){ this.coinsLeft--;}
     public int getLeftCoins(){ return coinsLeft;}
+    public int getRemainingJump(){ return remainingJump;}
+    public void setRemainingJump(int time){ this.remainingJump = time;}
+    public void quitRemainingJump(){ this.remainingJump--;}
 
     // Reset Bonk to a known position
     public void reset(int x, int y) {
@@ -225,9 +229,8 @@ public class Bonk extends GameObject {
         );
     }
 
-    public void superBonk(){
-        this.MAX_VELOCITY = 15;
-        this.JUMP_VELOCITY = -30;
-
+    public void setJump(int jump){
+        this.JUMP_VELOCITY = jump;
     }
+
 }

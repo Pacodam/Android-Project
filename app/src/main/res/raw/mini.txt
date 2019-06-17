@@ -34,6 +34,7 @@ WALLS  = [#]
 WATER  = 9,23,24,25
 
 MUSHROOM = 35,27
+MUSHROOM = 28,9
 
 COIN   = 5,5
 COIN   = 10,5
